@@ -1,0 +1,30 @@
+# Render Blueprint: Dashboard -> New -> Blueprint -> pick this repo.
+# A persistent disk is required (SQLite database + stored recordings); disks need a paid instance type.
+services:
+  - type: web
+    name: firstrecord
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    disk:
+      name: firstrecord-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: DEMO_MODE
+        value: "true"
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: STORAGE_ENCRYPTION_KEY
+        sync: false   # 32 random bytes, base64 — set in the dashboard
+      - key: JUDGE_EMAIL
+        sync: false
+      - key: JUDGE_PASSWORD
+        sync: false
+      - key: JUDGE_NAME
+        value: Hackathon Judges
+      - key: SEED_PASSWORD
+        sync: false
+      - key: AI_PROVIDER
+        value: demo
