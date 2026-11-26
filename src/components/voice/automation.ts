@@ -332,7 +332,11 @@ export function createAutomation(deps: Deps) {
     if (!btn) return { ok: false, detail: "submit-not-found" };
     btn.scrollIntoView({ block: "center", behavior: reducedMotion() ? "auto" : "smooth" });
     await deps.flyTo(btn.getBoundingClientRect(), { kind: "submit", form });
-    btn.click();
+    const liveBtn = btn.isConnected
+      ? btn
+      : document.querySelector(FORM_ANCHOR[form])?.closest("form")?.querySelector<HTMLButtonElement>('button[type="submit"]');
+    if (!liveBtn) return { ok: false, detail: "submit-not-found" };
+    liveBtn.click();
     if (form === "sos") {
       // The SOS form asks for confirmation; the user already confirmed by voice.
       const dlg = (await waitFor("dialog[open]", 2500)) as HTMLDialogElement | null;
@@ -358,11 +362,27 @@ export function createAutomation(deps: Deps) {
     return "none";
   }
 
-  async function tapAndClick(el: HTMLElement, target: VoiceTarget) {
+  /**
+   * Fly to a control and activate it. The page can re-render while the mascot is flying
+   * (e.g. router.refresh after a save), which replaces the DOM node; clicking the stale,
+   * detached node would bypass React and — for links — make the browser do a full page
+   * load that ends the call. So: re-resolve the element after the animation, and follow
+   * same-origin links through the client router instead of a native click.
+   */
+  async function tapAndClick(el: HTMLElement, target: VoiceTarget, resolve?: () => HTMLElement | null) {
     el.scrollIntoView({ block: "center", behavior: reducedMotion() ? "auto" : "smooth" });
     await sleep(reducedMotion() ? 0 : 250);
     await deps.flyTo(el.getBoundingClientRect(), target);
-    el.click();
+    const live = el.isConnected ? el : resolve?.() ?? null;
+    if (!live) return;
+    if (live instanceof HTMLAnchorElement) {
+      const href = live.getAttribute("href") ?? "";
+      if (href.startsWith("/") && !href.startsWith("//")) {
+        deps.push(href);
+        return;
+      }
+    }
+    live.click();
   }
 
   /** Press the current intake step's primary forward control and wait for the next step. */
@@ -384,7 +404,7 @@ export function createAutomation(deps: Deps) {
       if (cur !== start) return { ok: true, detail: cur ?? undefined };
       const link = forwardLink(cur);
       if (link) {
-        await tapAndClick(link, { kind: "submit", form: "report" });
+        await tapAndClick(link, { kind: "submit", form: "report" }, () => forwardLink(cur));
         const r = await waitForProgress(cur, 10000);
         if (r === "step") return { ok: true, detail: readIntakeStep() ?? undefined };
         continue;
@@ -398,7 +418,7 @@ export function createAutomation(deps: Deps) {
         pf.form.querySelector<HTMLInputElement>('input[name="method"][value="typed"]')?.click();
         await sleep(150);
       }
-      await tapAndClick(pf.button, { kind: "submit", form: "report" });
+      await tapAndClick(pf.button, { kind: "submit", form: "report" }, () => primaryStepForm()?.button ?? null);
       // a step may ask for confirmation (e.g. "Generate draft")
       const dlg = (await waitFor("dialog[open]", 1500)) as HTMLDialogElement | null;
       if (dlg) {

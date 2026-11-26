@@ -734,3 +734,42 @@ describe("voice dialog: round 5 — intake wizard", () => {
     expect(h.d.onActionResult({ action: { type: "advanceIntake", step: "draft" }, ok: false })?.say).toContain("दिक्कत");
   });
 });
+
+describe("serialize / restore (call survives page reloads)", () => {
+  it("restores a FIR mid-flow and keeps filling the right slot", () => {
+    const d = mk("Hackathon Judges", "/intake/new");
+    d.handle("FIR दर्ज करनी है");
+    d.handle("रमेश कुमार");
+    const snap = JSON.parse(JSON.stringify(d.serialize!()));
+    const d2 = mk("Hackathon Judges", "/intake/new");
+    expect(d2.restore!(snap)).toBe(true);
+    const t = d2.handle("9876500001");
+    expect(fills(t.actions)).toContainEqual(["report.speakerContact", "9876500001"]);
+    expect(fills(t.actions).some(([f]) => f === "report.speakerName")).toBe(false);
+  });
+
+  it("restores the reply language", () => {
+    const d = mk();
+    d.handle("speak in English");
+    const d2 = mk();
+    d2.restore!(JSON.parse(JSON.stringify(d.serialize!())));
+    expect(d2.handle("go to updates").lang).toBe("en");
+  });
+
+  it("restores wizard mode so the next step is announced", () => {
+    const d = mk("Hackathon Judges", "/intake/abc");
+    d.onIntakeStep!("capture:saved");
+    const d2 = mk("Hackathon Judges", "/intake/abc");
+    d2.restore!(JSON.parse(JSON.stringify(d.serialize!())));
+    const t = d2.onIntakeStep!("transcript");
+    expect(t).not.toBeNull();
+    expect(t!.say.length).toBeGreaterThan(0);
+  });
+
+  it("rejects incompatible or malformed snapshots", () => {
+    const d = mk();
+    expect(d.restore!({ v: 999 })).toBe(false);
+    expect(d.restore!({ v: 1, state: null })).toBe(false);
+    expect(d.handle("SOS पर जाओ").actions.some((a) => a.type === "navigate")).toBe(true);
+  });
+});

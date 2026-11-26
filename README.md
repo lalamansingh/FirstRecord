@@ -13,7 +13,7 @@
 ![Voice](https://img.shields.io/badge/Voice-Gnani%20Vachana-19C37D)
 ![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)
 ![Render](https://img.shields.io/badge/Hosted%20on-Render-46E3B7?logo=render&logoColor=111216)
-![Tests](https://img.shields.io/badge/tests-236%20passing-19C37D)
+![Tests](https://img.shields.io/badge/tests-240%20passing-19C37D)
 ![Languages](https://img.shields.io/badge/UI%20languages-10-9DF0C4)
 
 <img src="docs/screenshots/02-dashboard.png" alt="FirstRecord dashboard" width="900">
@@ -291,7 +291,7 @@ flowchart LR
 | Voice | Gnani Vachana — Prisma v3.0 (STT), Timbre v2.5 (TTS: Nalini hi-IN, Devika en-IN); Web Audio API (VAD, playback) |
 | AI | Claude Sonnet 5.5 via Anthropic SDK (FIR drafts), OpenAI Whisper base/small in the browser (Transformers.js + ONNX Runtime Web) |
 | Realtime & geo | Geolocation API, Haversine targeting, Web Audio siren, Vibration API |
-| Quality | Vitest (236 tests in 16 suites), ESLint, strict TypeScript |
+| Quality | Vitest (240 tests in 16 suites), ESLint, strict TypeScript |
 | Ops | Docker (multi-stage), Render blueprint, health check `/api/health` |
 
 ---
@@ -313,7 +313,7 @@ flowchart LR
 
 ```
  Test Files  16 passed (16)
-      Tests  236 passed (236)
+      Tests  240 passed (240)
 ```
 
 <details>
@@ -356,7 +356,7 @@ flowchart LR
 > - Voice needs a microphone and HTTPS (or localhost); browsers block audio until you interact with the page.
 > - Gnani latency varies — usually about 1 s, occasionally much longer.
 > - The hosted demo generates FIR drafts in demo mode unless an Anthropic API key is configured.
-> - Voice FIR: the page reloads when the wizard reaches the transcript step, which currently ends the call; tap the mascot and say "आगे बढ़ो" / "next" to continue from that step (a fix that keeps the call alive across reloads is in progress).
+> - If the page is reloaded during a call, the call is restored from the session; browsers may need one tap on the cap to re-enable the microphone and sound.
 
 ---
 

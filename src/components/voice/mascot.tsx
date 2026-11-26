@@ -36,7 +36,7 @@ export const Mascot = forwardRef<HTMLButtonElement, {
       onClick={onClick}
       aria-label={label}
       data-fr-mascot=""
-      className="group fixed left-0 top-0 z-[70] rounded-full outline-none focus-visible:ring-4 focus-visible:ring-[#9DF0C4]/70"
+      className="group fixed left-0 top-0 z-[95] rounded-full outline-none focus-visible:ring-4 focus-visible:ring-[#9DF0C4]/70"
       style={{
         transform: `translate3d(${pos.x}px, ${pos.y}px, 0)`,
         width: pos.size,
@@ -73,7 +73,7 @@ export function IntroBubble({ pos, onTalk, onLater, userName }: { pos: MascotPos
       role="dialog"
       aria-modal="false"
       aria-labelledby="fr-voice-intro-title"
-      className="fr-mascot-pop fixed z-[71] rounded-[18px] border border-[#E6E4DE] bg-white p-5 shadow-[0_12px_32px_rgb(17_18_22/0.12)]"
+      className="fr-mascot-pop fixed z-[96] rounded-[18px] border border-[#E6E4DE] bg-white p-5 shadow-[0_12px_32px_rgb(17_18_22/0.12)]"
       style={{ left, top, width }}
     >
       <p id="fr-voice-intro-title" className="text-[15px] font-semibold tracking-[-0.01em] text-[#111216]">
@@ -133,7 +133,7 @@ export function MascotControls({
       role="group"
       aria-label={tr("Voice assistant")}
       data-fr-mascot=""
-      className="fixed left-0 top-0 z-[71] flex flex-col gap-2"
+      className="fixed left-0 top-0 z-[96] flex flex-col gap-2"
       style={{
         transform: `translate3d(${Math.max(8, Math.min(vw - 48, x))}px, ${Math.max(8, Math.min(vh - 92, y))}px, 0)`,
         opacity: faded ? 0 : 1,
@@ -171,7 +171,7 @@ export function MascotHint({ pos, text }: { pos: MascotPos; text: string }) {
   const left = Math.max(12, Math.min(vw - width - 12, pos.x + pos.size / 2 - width / 2));
   return (
     <p
-      className="fr-mascot-pop fixed z-[71] rounded-[12px] bg-[#111216] px-3 py-2 text-center text-[12px] leading-snug text-white shadow-[0_8px_20px_rgb(17_18_22/0.2)]"
+      className="fr-mascot-pop fixed z-[96] rounded-[12px] bg-[#111216] px-3 py-2 text-center text-[12px] leading-snug text-white shadow-[0_8px_20px_rgb(17_18_22/0.2)]"
       style={{ left, top: Math.max(8, pos.y - 46), width }}
     >
       {text}
