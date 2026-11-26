@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import {
-  IBM_Plex_Sans,
-  Poppins,
+  Inter,
+  Geist_Mono,
   Noto_Sans_Devanagari,
   Noto_Sans_Bengali,
   Noto_Sans_Tamil,
@@ -22,8 +22,8 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-const plex = IBM_Plex_Sans({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-plex", display: "swap" });
-const poppins = Poppins({ subsets: ["latin"], weight: ["500", "600", "700"], variable: "--font-poppins", display: "swap" });
+const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-inter", display: "swap" });
+const geistMono = Geist_Mono({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-geist-mono", display: "swap" });
 const devanagari = Noto_Sans_Devanagari({ subsets: ["devanagari"], weight: ["400", "500", "600", "700"], variable: "--font-devanagari", display: "swap" });
 // Other Indic scripts: not preloaded — the browser fetches a face only when text in that script is rendered.
 const bengali = Noto_Sans_Bengali({ subsets: ["bengali"], weight: ["400", "500", "600", "700"], variable: "--font-bengali", display: "swap", preload: false });
@@ -33,7 +33,7 @@ const gujarati = Noto_Sans_Gujarati({ subsets: ["gujarati"], weight: ["400", "50
 const kannada = Noto_Sans_Kannada({ subsets: ["kannada"], weight: ["400", "500", "600", "700"], variable: "--font-kannada", display: "swap", preload: false });
 const malayalam = Noto_Sans_Malayalam({ subsets: ["malayalam"], weight: ["400", "500", "600", "700"], variable: "--font-malayalam", display: "swap", preload: false });
 const gurmukhi = Noto_Sans_Gurmukhi({ subsets: ["gurmukhi"], weight: ["400", "500", "600", "700"], variable: "--font-gurmukhi", display: "swap", preload: false });
-const fontVars = [plex, poppins, devanagari, bengali, tamil, telugu, gujarati, kannada, malayalam, gurmukhi].map((f) => f.variable).join(" ");
+const fontVars = [inter, geistMono, devanagari, bengali, tamil, telugu, gujarati, kannada, malayalam, gurmukhi].map((f) => f.variable).join(" ");
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const lang = await getUiLang();

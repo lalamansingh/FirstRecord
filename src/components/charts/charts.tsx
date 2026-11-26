@@ -6,10 +6,13 @@
  */
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useT } from "@/lib/i18n/client";
 import type { MsgKey } from "@/lib/i18n/messages";
 
-const SERIES = "#14523F"; // brand deep green; single-hue charts
+// Single-hue charts driven by theme variables (fallbacks match the Indus-style palette).
+const SERIES = "var(--chart-1, #111216)";
+const SERIES_ACTIVE = "var(--chart-2, #19C37D)";
 
 export interface Datum {
   label: string;
@@ -66,6 +69,7 @@ export function BarList({
   labelHeader = tr(labelHeader as MsgKey);
   valueHeader = tr(valueHeader as MsgKey);
   empty = tr(empty as MsgKey);
+  const [hover, setHover] = useState<number | null>(null);
   const format = (n: number) => n.toLocaleString("en-IN", { maximumFractionDigits: decimals, minimumFractionDigits: decimals }) + suffix;
   if (data.length === 0 || data.every((d) => d.value === 0)) {
     return <p className="py-6 text-center text-sm text-slate-500">{empty}</p>;
@@ -73,32 +77,38 @@ export function BarList({
   const max = Math.max(...data.map((d) => d.value), 1);
   return (
     <figure aria-label={label}>
-      <ul className="space-y-[2px]">
-        {data.map((d) => {
+      <ul className="space-y-[2px]" onMouseLeave={() => setHover(null)}>
+        {data.map((d, i) => {
+          const on = hover === i;
           const pct = (d.value / max) * 100;
           const name = `${d.label}: ${format(d.value)}${d.hint ? ` (${d.hint})` : ""}`;
           const row = (
-            <div className="grid grid-cols-[minmax(7rem,38%)_1fr] items-center gap-3 rounded-md px-2 py-1.5 group-hover:bg-slate-50">
-              <span className="truncate text-sm text-slate-700" title={d.label}>{d.label}</span>
+            <div className={`relative grid grid-cols-[minmax(7rem,38%)_1fr] items-center gap-3 rounded-[10px] px-2 py-1.5 transition-colors ${on ? "bg-[#FAFAF7]" : ""}`}>
+              <span className={`truncate text-sm ${on ? "font-medium text-[#111216]" : "text-[#4E545A]"}`} title={d.label}>{d.label}</span>
               <span className="flex items-center gap-3">
-                <span className="relative block h-2 flex-1 overflow-hidden rounded-sm bg-slate-100" aria-hidden>
+                <span className="relative block h-2 flex-1 overflow-hidden rounded-full bg-[#F1F0EC]" aria-hidden>
                   <span
-                    className="absolute inset-y-0 left-0 rounded-sm"
-                    style={{ width: `${Math.max(pct, d.value > 0 ? 2 : 0)}%`, background: SERIES }}
+                    className="absolute inset-y-0 left-0 rounded-full transition-[width,background-color] duration-500 motion-reduce:transition-none"
+                    style={{ width: `${Math.max(pct, d.value > 0 ? 2 : 0)}%`, background: on ? SERIES_ACTIVE : SERIES }}
                   />
                 </span>
-                <span className="w-12 text-right text-sm font-medium tabular-nums text-slate-900">{format(d.value)}</span>
+                <span className="w-12 text-right font-mono text-sm font-medium tabular-nums text-[#111216]">{format(d.value)}</span>
               </span>
+              {on && d.href && (
+                <span role="status" className="pointer-events-none absolute -top-8 right-2 z-10 whitespace-nowrap rounded-full bg-[#111216] px-3 py-1 text-xs font-medium text-white shadow-lg">
+                  {tr("View {label}", { label: d.label })} · <span className="font-mono">{format(d.value)}</span>
+                </span>
+              )}
             </div>
           );
           return (
-            <li key={d.label} className="group" title={name}>
+            <li key={d.label} className="group" onMouseEnter={() => setHover(i)} onFocus={() => setHover(i)} onBlur={() => setHover(null)}>
               {d.href ? (
-                <Link href={d.href} aria-label={name} className="block rounded focus-visible:ring-2 focus-visible:ring-[var(--brand)]">
+                <Link href={d.href} aria-label={name} className="block rounded-[10px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#111216]">
                   {row}
                 </Link>
               ) : (
-                <div tabIndex={0} aria-label={name} className="rounded focus-visible:ring-2 focus-visible:ring-[var(--brand)]">{row}</div>
+                <div tabIndex={0} aria-label={name} title={name} className="rounded-[10px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#111216]">{row}</div>
               )}
             </li>
           );
@@ -127,6 +137,7 @@ export function ColumnChart({
   labelHeader = tr(labelHeader as MsgKey);
   valueHeader = tr(valueHeader as MsgKey);
   const [active, setActive] = useState<number | null>(null);
+  const router = useRouter();
   if (data.length === 0) return <p className="py-6 text-center text-sm text-slate-500">{tr("No data for the selected period.")}</p>;
   const max = Math.max(...data.map((d) => d.value), 1);
   const niceMax = max <= 4 ? 4 : Math.ceil(max / 4) * 4;
@@ -148,8 +159,8 @@ export function ColumnChart({
           const y = 6 + plotH - (t / niceMax) * plotH;
           return (
             <g key={t}>
-              <line x1={padL} x2={W} y1={y} y2={y} stroke="#e4eae7" strokeWidth={1} strokeDasharray={t === 0 ? undefined : "3 3"} />
-              <text x={padL - 6} y={y + 3} textAnchor="end" fontSize={11} fill="#6f7a75">{fmt(t)}</text>
+              <line x1={padL} x2={W} y1={y} y2={y} stroke="#ECEAE4" strokeWidth={1} strokeDasharray={t === 0 ? undefined : "3 3"} />
+              <text x={padL - 6} y={y + 3} textAnchor="end" fontSize={11} fill="#5B5E66">{fmt(t)}</text>
             </g>
           );
         })}
@@ -161,8 +172,8 @@ export function ColumnChart({
           const path = h > 0 ? `M${x},${y + h} V${y + r} Q${x},${y} ${x + r},${y} H${x + barW - r} Q${x + barW},${y} ${x + barW},${y + r} V${y + h} Z` : "";
           return (
             <g key={d.label}>
-              {active === i && <rect x={padL + i * band} y={6} width={band} height={plotH} fill="#f0f3f1" rx={2} />}
-              {path && <path d={path} fill={SERIES} opacity={active === null || active === i ? 1 : 0.55} />}
+              {active === i && <rect x={padL + i * band} y={6} width={band} height={plotH} fill="#FAFAF7" rx={4} />}
+              {path && <path d={path} fill={active === i ? SERIES_ACTIVE : SERIES} opacity={active === null || active === i ? 1 : 0.45} className="transition-opacity duration-150" />}
               {/* hit target larger than the mark */}
               <rect
                 x={padL + i * band}
@@ -176,11 +187,15 @@ export function ColumnChart({
                 onMouseLeave={() => setActive(null)}
                 onFocus={() => setActive(i)}
                 onBlur={() => setActive(null)}
-                className="outline-none focus-visible:stroke-[var(--brand)]"
+                onClick={d.href ? () => router.push(d.href!) : undefined}
+                onKeyDown={d.href ? (e) => { if (e.key === "Enter") router.push(d.href!); } : undefined}
+                role={d.href ? "link" : undefined}
+                style={{ cursor: d.href ? "pointer" : "default" }}
+                className="outline-none focus-visible:stroke-[#111216]"
                 strokeWidth={2}
               />
               {i % labelEvery === 0 && (
-                <text x={padL + i * band + band / 2} y={height - 6} textAnchor="middle" fontSize={11} fill="#6f7a75">{d.label}</text>
+                <text x={padL + i * band + band / 2} y={height - 6} textAnchor="middle" fontSize={11} fill="#5B5E66">{d.label}</text>
               )}
             </g>
           );
@@ -189,11 +204,11 @@ export function ColumnChart({
       {a && active !== null && (
         <div
           role="status"
-          className="pointer-events-none absolute -top-2 rounded-md border border-slate-200 bg-white px-3 py-2 text-xs text-slate-900 shadow-[var(--shadow-pop)]"
+          className="pointer-events-none absolute -top-2 rounded-[10px] bg-[#111216] px-3 py-2 text-xs text-white shadow-lg"
           style={{ left: `clamp(0px, calc(${((padL + active * band + band / 2) / W) * 100}% - 4rem), calc(100% - 8rem))` }}
         >
-          <p className="text-slate-500">{a.label}{a.hint ? ` · ${a.hint}` : ""}</p>
-          <p className="font-semibold tabular-nums text-slate-900">{fmt(a.value)} {valueHeader.toLocaleLowerCase()}</p>
+          <p className="text-white/70">{a.label}{a.hint ? ` · ${a.hint}` : ""}</p>
+          <p className="font-mono font-semibold tabular-nums text-white">{fmt(a.value)} {valueHeader.toLocaleLowerCase()}</p>
         </div>
       )}
       <TableView data={data} labelHeader={labelHeader} valueHeader={valueHeader} format={fmt} />

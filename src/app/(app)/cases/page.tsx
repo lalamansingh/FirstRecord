@@ -202,7 +202,7 @@ export default async function CasesPage({ searchParams }: { searchParams: Promis
                       return (
                         <li key={r.id} className="rounded-lg border border-slate-200 bg-white p-3 shadow-[var(--shadow-card)] transition-shadow hover:shadow-[var(--shadow-raised)]">
                           <div className="flex items-start justify-between gap-2">
-                            <Link href={`/cases/${r.id}`} className="font-mono text-xs font-semibold text-[#1B6650] hover:underline">{r.reference}</Link>
+                            <Link href={`/cases/${r.id}`} className="font-mono text-xs font-semibold text-[#111216] hover:underline">{r.reference}</Link>
                             <PriorityBadge priority={r.priority} />
                           </div>
                           <Link href={`/cases/${r.id}`} className="mt-1 block text-sm font-medium text-slate-900 hover:underline">{r.title}</Link>

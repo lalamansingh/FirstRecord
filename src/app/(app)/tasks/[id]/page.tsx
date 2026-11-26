@@ -110,7 +110,7 @@ export default async function TaskDetailPage({ params }: { params: Promise<{ id:
           {manage && (
             <Card title={tr("Edit task")} description={tr("Changes are recorded in the activity history and audit log.")}>
               <details>
-                <summary className="cursor-pointer text-sm font-medium text-[#1B6650] hover:underline">{tr("Show edit form")}</summary>
+                <summary className="cursor-pointer text-sm font-medium text-[#111216] hover:underline">{tr("Show edit form")}</summary>
                 <div className="mt-4">
                   <TaskForm
                     action={updateTaskAction}
@@ -163,7 +163,7 @@ export default async function TaskDetailPage({ params }: { params: Promise<{ id:
                 { label: tr("Owner"), value: task.assignee_name ?? tr("Unassigned") },
                 { label: tr("Due"), value: <span className={overdue ? "font-medium text-red-700" : undefined}>{formatDate(task.due_at, { time: true, lang })}</span> },
                 { label: tr("Reminder"), value: formatDate(task.remind_at, { time: true, lang }) },
-                { label: tr("Linked case"), value: task.case_id ? <Link className="text-[#1B6650] hover:underline" href={`/cases/${task.case_id}`}>{task.case_reference}</Link> : "None" },
+                { label: tr("Linked case"), value: task.case_id ? <Link className="text-[#111216] hover:underline" href={`/cases/${task.case_id}`}>{task.case_reference}</Link> : "None" },
                 { label: tr("Created by"), value: task.creator_name ?? "—" },
                 { label: tr("Created"), value: formatDate(task.created_at, { time: true, lang }) },
                 { label: tr("Completed"), value: formatDate(task.completed_at, { time: true, lang }) },

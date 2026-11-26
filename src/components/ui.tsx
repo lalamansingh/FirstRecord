@@ -9,14 +9,14 @@ export function cx(...c: (string | false | null | undefined)[]) {
 }
 
 export const btn = {
-  base: "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium leading-5 select-none transition-colors duration-100 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand)] focus-visible:ring-offset-2 whitespace-nowrap [&_svg]:shrink-0 [&_svg]:h-4 [&_svg]:w-4",
-  primary: "bg-[var(--brand)] text-white border border-[var(--brand)] hover:bg-[var(--brand-hover)] hover:border-[var(--brand-hover)] active:bg-[var(--brand-active)] px-3.5 py-2 min-h-9",
-  secondary: "bg-white text-slate-700 border border-slate-300 shadow-[var(--shadow-xs)] hover:bg-slate-50 hover:text-slate-900 active:bg-slate-100 px-3.5 py-2 min-h-9",
-  ghost: "text-slate-700 hover:bg-slate-100 hover:text-slate-900 active:bg-slate-200 px-3 py-1.5",
-  danger: "bg-[var(--danger)] text-white border border-[var(--danger)] hover:bg-red-800 hover:border-red-800 px-3.5 py-2 min-h-9",
-  soft: "bg-white text-[var(--brand)] border border-slate-300 hover:bg-slate-50 px-3.5 py-2 min-h-9",
-  sm: "!px-3 !py-1 !min-h-8 !gap-1.5 text-[13px] [&_svg]:!h-3.5 [&_svg]:!w-3.5",
-  lg: "!px-4 !py-2.5 !min-h-10 [&_svg]:!h-4 [&_svg]:!w-4",
+  base: "inline-flex items-center justify-center gap-2 rounded-full text-sm font-medium leading-5 select-none transition-[background-color,border-color,color,box-shadow] duration-150 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[#9df0c4]/70 focus-visible:ring-offset-1 whitespace-nowrap [&_svg]:shrink-0 [&_svg]:h-4 [&_svg]:w-4",
+  primary: "bg-[#111216] text-white border border-[#111216] hover:bg-[#2a2c33] hover:border-[#2a2c33] active:bg-[#08060c] px-4 py-2 min-h-9",
+  secondary: "bg-white text-[#111216] border border-[#e6e4de] hover:border-[#d7d2cc] hover:bg-[#f5f3f1] active:bg-[#ebe9e3] px-4 py-2 min-h-9",
+  ghost: "text-[#4e545a] hover:bg-[#f5f3f1] hover:text-[#111216] active:bg-[#ebe9e3] px-3 py-1.5",
+  danger: "bg-[var(--danger)] text-white border border-[var(--danger)] hover:bg-red-800 hover:border-red-800 px-4 py-2 min-h-9",
+  soft: "bg-[#e7f6e9] text-[#111216] border border-[#c9f3dd] hover:bg-[#c9f3dd] px-4 py-2 min-h-9",
+  sm: "!px-3.5 !py-1 !min-h-8 !gap-1.5 text-[13px] [&_svg]:!h-3.5 [&_svg]:!w-3.5",
+  lg: "!px-5 !py-2.5 !min-h-11 [&_svg]:!h-4 [&_svg]:!w-4",
   icon: "!p-0 !min-h-9 h-9 w-9",
 };
 
@@ -71,22 +71,22 @@ export function Button({
 }
 
 const TONES = {
-  slate: "bg-slate-100 text-slate-700 border-slate-200",
-  blue: "bg-navy-50 text-navy-700 border-navy-100",
-  amber: "bg-[var(--warning-bg)] text-[var(--warning)] border-[var(--warning-border)]",
-  violet: "bg-violet-50 text-violet-700 border-violet-200",
+  slate: "bg-[#f5f3f1] text-[#3a3d44] border-[#e6e4de]",
+  blue: "bg-[#e7f6e9] text-[#111216] border-[#c9f3dd]",
+  amber: "bg-[#ffe2c4] text-[#8a5a12] border-[#ffd1a3]",
+  violet: "bg-[#fff0e0] text-[#8a5a12] border-[#ffe2c4]",
   green: "bg-[var(--success-bg)] text-[var(--success)] border-[var(--success-border)]",
   red: "bg-[var(--danger-bg)] text-[var(--danger)] border-[var(--danger-border)]",
-  teal: "bg-teal-50 text-teal-700 border-teal-200",
+  teal: "bg-[#e7f6e9] text-[#0f7f51] border-[#c9f3dd]",
 } as const;
 const DOTS: Record<keyof typeof TONES, string> = {
-  slate: "bg-slate-400",
-  blue: "bg-navy-600",
-  amber: "bg-amber-500",
-  violet: "bg-violet-500",
-  green: "bg-emerald-600",
+  slate: "bg-[#a7b0ac]",
+  blue: "bg-[#111216]",
+  amber: "bg-[#d9913e]",
+  violet: "bg-[#d9913e]",
+  green: "bg-[#19c37d]",
   red: "bg-red-600",
-  teal: "bg-teal-500",
+  teal: "bg-[#19c37d]",
 };
 export type Tone = keyof typeof TONES;
 
@@ -107,7 +107,7 @@ export function Badge({
   return (
     <span
       className={cx(
-        "inline-flex items-center gap-1.5 rounded border font-medium whitespace-nowrap [&_svg]:h-3 [&_svg]:w-3",
+        "inline-flex items-center gap-1.5 rounded-full border font-medium whitespace-nowrap [&_svg]:h-3 [&_svg]:w-3",
         size === "sm" ? "px-1.5 py-px text-[11px] leading-4" : "px-2 py-0.5 text-xs leading-5",
         TONES[tone],
         className,
@@ -158,6 +158,7 @@ export function Card({
         "overflow-hidden rounded-[var(--radius-card)] border border-[var(--border-subtle)]",
         variant === "muted" ? "bg-[var(--surface-sunken)]" : "bg-white",
         variant === "elevated" && "shadow-[var(--shadow-xs)]",
+        "transition-[border-color,box-shadow] duration-150 hover:border-[#d7d2cc]",
         className,
       )}
     >
@@ -170,7 +171,7 @@ export function Card({
               </span>
             )}
             <div className="min-w-0">
-              {title && <h2 className="text-[15px] font-semibold leading-6 text-slate-900">{title}</h2>}
+              {title && <h2 className="text-[15px] font-semibold leading-6 tracking-[-0.01em] text-[#111216]">{title}</h2>}
               {description && <p className="mt-0.5 text-[13px] leading-5 text-slate-600">{description}</p>}
             </div>
           </div>
@@ -238,7 +239,7 @@ export function PageHeader({
           )}
           <div className="min-w-0">
             {eyebrow && <p className="mb-1 text-[13px] font-medium text-slate-500">{eyebrow}</p>}
-            <h1 className="text-[22px] font-semibold leading-tight tracking-[-0.01em] text-slate-900">{title}</h1>
+            <h1 className="text-[30px] font-semibold leading-[1.15] tracking-[-0.02em] text-[#111216]">{title}</h1>
             {description && <p className="mt-1 max-w-3xl text-sm leading-6 text-slate-600">{description}</p>}
             {meta && <div className="mt-3 flex flex-wrap items-center gap-2">{meta}</div>}
           </div>
@@ -261,7 +262,7 @@ export function EmptyState({
   icon?: ReactNode;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-slate-300 bg-white px-6 py-10 text-center">
+    <div className="flex flex-col items-center justify-center rounded-[14px] border border-dashed border-[#d7d2cc] bg-white px-6 py-10 text-center">
       <div className="mb-3 text-slate-400 [&_svg]:h-6 [&_svg]:w-6" aria-hidden>
         {icon ?? <Inbox />}
       </div>
@@ -284,14 +285,14 @@ export function Notice({
   className?: string;
 }) {
   const styles = {
-    blue: "border-[var(--info-border)] bg-[var(--info-bg)] text-slate-800 [&_p:first-child]:text-[#194185]",
-    amber: "border-[var(--warning-border)] bg-[var(--warning-bg)] text-slate-800 [&_p:first-child]:text-[#7a3417]",
+    blue: "border-[var(--info-border)] bg-[var(--info-bg)] text-slate-800 [&_p:first-child]:text-[#111216]",
+    amber: "border-[var(--warning-border)] bg-[var(--warning-bg)] text-slate-800 [&_p:first-child]:text-[#8a5a12]",
     red: "border-[var(--danger-border)] bg-[var(--danger-bg)] text-slate-800 [&_p:first-child]:text-[#912018]",
     green: "border-[var(--success-border)] bg-[var(--success-bg)] text-slate-800 [&_p:first-child]:text-[#085d3a]",
     slate: "border-slate-200 bg-slate-50 text-slate-800",
   }[tone];
   return (
-    <div role={tone === "red" ? "alert" : "note"} className={cx("rounded-md border px-4 py-3 text-sm leading-6", styles, className)}>
+    <div role={tone === "red" ? "alert" : "note"} className={cx("rounded-[12px] border px-4 py-3 text-sm leading-6", styles, className)}>
       {title && <p className="font-semibold">{title}</p>}
       {children && <div className={title ? "mt-0.5" : ""}>{children}</div>}
     </div>
@@ -318,7 +319,7 @@ export function Table({
     <div className={cx("overflow-x-auto", className)}>
       <table
         className={cx(
-          "w-full border-separate border-spacing-0 text-sm [&_tbody_tr:hover]:bg-slate-50 [&_tbody_tr:last-child>td]:border-b-0",
+          "w-full border-separate border-spacing-0 text-sm [&_tbody_tr]:transition-colors [&_tbody_tr:hover]:bg-[#f5f3f1] [&_tbody_tr:last-child>td]:border-b-0",
           stickyHeader && "[&_thead_th]:sticky [&_thead_th]:top-0 [&_thead_th]:z-[1]",
           dense && "[&_td]:!py-2 [&_th]:!py-2",
         )}
@@ -334,7 +335,7 @@ export function Th({ children, className }: { children?: ReactNode; className?: 
     <th
       scope="col"
       className={cx(
-        "whitespace-nowrap border-b border-[var(--border-subtle)] bg-[var(--surface-sunken)] px-4 py-2.5 text-left text-xs font-semibold text-slate-600 first:pl-5 last:pr-5",
+        "whitespace-nowrap border-b border-[var(--border-subtle)] bg-[#fafaf7] px-4 py-2.5 text-left text-xs font-medium text-[#5b5e66] first:pl-5 last:pr-5",
         className,
       )}
     >
@@ -343,7 +344,7 @@ export function Th({ children, className }: { children?: ReactNode; className?: 
   );
 }
 export function Td({ children, className }: { children?: ReactNode; className?: string }) {
-  return <td className={cx("border-b border-slate-200 px-4 py-3 align-top text-sm leading-6 text-slate-900 first:pl-5 last:pr-5", className)}>{children}</td>;
+  return <td className={cx("border-b border-[#ebe9e3] px-4 py-3 align-top text-sm leading-6 text-[#111216] first:pl-5 last:pr-5", className)}>{children}</td>;
 }
 
 export function Stat({
@@ -373,7 +374,7 @@ export function Stat({
       <div className="min-w-0">
         <p className="text-[13px] font-medium text-slate-600">{label}</p>
         <div className="mt-2 flex items-baseline gap-2">
-          <p className={cx("font-[family-name:var(--font-display)] text-[28px] font-semibold leading-none tracking-[-0.01em] tabular-nums", tone === "red" ? "text-[var(--danger)]" : tone === "amber" ? "text-[var(--accent)]" : tone === "green" ? "text-[var(--success)]" : "text-slate-900")}>{value}</p>
+          <p className={cx("font-mono text-[30px] font-medium leading-none tracking-[-0.03em] tabular-nums", tone === "red" ? "text-[var(--danger)]" : tone === "amber" ? "text-[#8a5a12]" : tone === "green" ? "text-[var(--success)]" : "text-slate-900")}>{value}</p>
           {trend && <TrendChip {...trend} />}
         </div>
         {hint && <p className="mt-2 text-xs leading-5 text-slate-600">{hint}</p>}
@@ -386,9 +387,9 @@ export function Stat({
       )}
     </div>
   );
-  const cls = "group relative block rounded-[var(--radius-card)] border border-[var(--border-subtle)] bg-white p-5";
+  const cls = "group relative block rounded-[var(--radius-card)] border border-[var(--border-subtle)] bg-white p-5 transition-[border-color,box-shadow,transform] duration-150";
   return href ? (
-    <Link href={href} className={cx(cls, "transition-colors hover:border-slate-300 hover:bg-slate-50/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand)] focus-visible:ring-offset-2")}>
+    <Link href={href} className={cx(cls, "hover:-translate-y-px hover:border-[#d7d2cc] hover:shadow-[0_4px_16px_rgb(17_18_22/0.06)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[#9df0c4]/70")}>
       {inner}
     </Link>
   ) : (
@@ -420,7 +421,7 @@ export function Sparkline({ data, tone, className }: { data: number[]; tone?: "r
   const span = max - min || 1;
   const pts = data.map((v, i) => [(i / (data.length - 1)) * w, h - 2 - ((v - min) / span) * (h - 4)] as const);
   const d = pts.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
-  const stroke = tone === "red" ? "#b42318" : tone === "amber" ? "#bb5427" : tone === "green" ? "#067647" : "#2A7A5F";
+  const stroke = tone === "red" ? "#b42318" : tone === "amber" ? "#d9913e" : tone === "green" ? "#19c37d" : "#111216";
   return (
     <svg viewBox={`0 0 ${w} ${h}`} className={cx("mt-3 h-7 w-full max-w-[140px]", className)} aria-hidden preserveAspectRatio="none">
       <path d={d} fill="none" stroke={stroke} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
@@ -440,15 +441,15 @@ export function Tabs({
   if (variant === "pills") {
     return (
       <nav aria-label="Sections" className="mb-6">
-        <ul className="inline-flex max-w-full overflow-x-auto rounded-md border border-slate-300 bg-white">
+        <ul className="inline-flex max-w-full overflow-x-auto rounded-full border border-[#e6e4de] bg-[#f5f3f1] p-0.5">
           {tabs.map((t) => (
             <li key={t.key}>
               <Link
                 href={t.href}
                 aria-current={t.key === active ? "page" : undefined}
                 className={cx(
-                  "inline-flex min-h-9 items-center gap-2 border-r border-slate-300 px-3.5 py-1.5 text-sm font-medium whitespace-nowrap transition-colors last:border-r-0",
-                  t.key === active ? "bg-slate-100 text-slate-900" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900",
+                  "inline-flex min-h-8 items-center gap-2 rounded-full px-3.5 py-1 text-sm font-medium whitespace-nowrap transition-colors",
+                  t.key === active ? "bg-white text-[#111216] shadow-[0_1px_2px_rgb(17_18_22/0.08)]" : "text-[#5b5e66] hover:text-[#111216]",
                 )}
               >
                 {t.label}
@@ -461,7 +462,7 @@ export function Tabs({
     );
   }
   return (
-    <nav aria-label="Sections" className="mb-6 border-b border-slate-200">
+    <nav aria-label="Sections" className="mb-6 border-b border-[#e6e4de]">
       <ul className="-mb-px flex gap-1 overflow-x-auto">
         {tabs.map((t) => (
           <li key={t.key}>
@@ -471,13 +472,13 @@ export function Tabs({
               className={cx(
                 "inline-flex min-h-11 items-center gap-2 border-b-2 px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors",
                 t.key === active
-                  ? "border-[var(--brand)] text-slate-900"
-                  : "border-transparent text-slate-600 hover:border-slate-300 hover:text-slate-900",
+                  ? "border-[#111216] text-[#111216]"
+                  : "border-transparent text-[#5b5e66] hover:border-[#d7d2cc] hover:text-[#111216]",
               )}
             >
               {t.label}
               {t.count !== undefined && (
-                <span className="rounded bg-slate-100 px-1.5 text-xs font-medium tabular-nums leading-5 text-slate-600">{t.count}</span>
+                <span className="rounded-full bg-white px-1.5 font-mono text-xs font-medium tabular-nums leading-5 text-[#5b5e66]">{t.count}</span>
               )}
             </Link>
           </li>
@@ -516,7 +517,7 @@ export function Pagination({ page, pageSize, total, hrefFor }: { page: number; p
 
 /** Form field styling */
 export const inputClass =
-  "block min-h-9 w-full rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm leading-6 text-slate-900 shadow-[var(--shadow-xs)] placeholder:text-slate-400 transition-colors focus:border-[var(--brand)] focus:outline-none focus:ring-1 focus:ring-[var(--brand)] disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500 aria-[invalid=true]:border-red-600 aria-[invalid=true]:focus:ring-red-600";
+  "block min-h-10 w-full rounded-[10px] border border-[#e6e4de] bg-white px-3 py-2 text-sm leading-6 text-[#111216] placeholder:text-[#a7b0ac] transition-[border-color,box-shadow] hover:border-[#d7d2cc] focus:border-[#111216] focus:outline-none focus:ring-[3px] focus:ring-[#9df0c4]/60 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500 aria-[invalid=true]:border-red-600 aria-[invalid=true]:focus:ring-red-600";
 
 export function Field({
   label,
@@ -573,7 +574,7 @@ export function Avatar({ name, size = 32, className }: { name: string; size?: nu
   return (
     <span
       aria-hidden
-      className={cx("inline-flex shrink-0 items-center justify-center rounded-full border border-slate-200 bg-slate-100 font-semibold text-slate-700", className)}
+      className={cx("inline-flex shrink-0 items-center justify-center rounded-full border border-[#c9f3dd] bg-[#e7f6e9] font-semibold text-[#111216]", className)}
       style={{ width: size, height: size, fontSize: Math.max(10, Math.round(size * 0.38)) }}
     >
       {initials || "?"}
@@ -598,7 +599,7 @@ export function SectionHeading({ id, title, description, action }: { id?: string
 export function IconTile({ children, tone = "slate", className }: { children: ReactNode; tone?: Tone; className?: string }) {
   const color = tone === "red" ? "text-[var(--danger)]" : tone === "amber" ? "text-[var(--warning)]" : tone === "green" ? "text-[var(--success)]" : "text-slate-500";
   return (
-    <span aria-hidden className={cx("flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-slate-200 bg-white [&_svg]:h-[18px] [&_svg]:w-[18px]", color, className)}>
+    <span aria-hidden className={cx("flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#e6e4de] bg-white [&_svg]:h-[18px] [&_svg]:w-[18px]", color, className)}>
       {children}
     </span>
   );

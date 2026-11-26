@@ -64,7 +64,7 @@ export default async function NotificationsPage({ searchParams }: { searchParams
                 <span className={cx("mt-1.5 h-2 w-2 shrink-0 rounded-full", n.read_at ? "bg-transparent" : "bg-navy-700")} aria-hidden />
                 <div className="min-w-0 flex-1">
                   <p className={cx("text-sm", n.read_at ? "text-slate-700" : "font-medium text-slate-900")}>
-                    {n.link ? <Link href={n.link} className="hover:text-[#0F4636] hover:underline">{n.title}</Link> : n.title}
+                    {n.link ? <Link href={n.link} className="hover:text-[#3a3d44] hover:underline">{n.title}</Link> : n.title}
                     {!n.read_at && <span className="sr-only"> (unread)</span>}
                   </p>
                   <p className="mt-0.5 flex flex-wrap items-center gap-2 text-xs text-slate-500">

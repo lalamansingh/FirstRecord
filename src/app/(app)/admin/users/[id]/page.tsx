@@ -140,7 +140,7 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
                 <SimpleUserAction action={revokeSessionsAction} userId={user.id} label={tr(sessions > 1 ? "Sign out {count} sessions" : "Sign out {count} session", { count: sessions })} confirm={tr("All active sessions for this user will end immediately.")} />
               )}
               {isSelf ? (
-                <p className="text-sm text-slate-600">{tr("Change your own password under")} <a className="text-[#1B6650] underline" href="/settings?tab=profile">{tr("Settings → Profile")}</a>.</p>
+                <p className="text-sm text-slate-600">{tr("Change your own password under")} <a className="text-[#111216] underline" href="/settings?tab=profile">{tr("Settings → Profile")}</a>.</p>
               ) : (
                 <ResetPasswordForm action={resetPasswordAction} userId={user.id} />
               )}

@@ -12,6 +12,11 @@ export interface LoginStrings {
   reviewId?: string;
   reviewPassword?: string;
   reviewUpdate?: string;
+  reviewCopy?: string;
+  reviewCopied?: string;
+  reviewUseDemo?: string;
+  showPassword?: string;
+  hidePassword?: string;
   signInTitle: string;
   signInSubtitle: string;
   email: string;
@@ -42,6 +47,11 @@ export const loginStrings: { en: LoginStrings; hi: LoginStrings } & Partial<Reco
     reviewId: "Demo ID",
     reviewPassword: "Password",
     reviewUpdate: "All features will be updated on the Grand Finale day.",
+    reviewCopy: "Copy",
+    reviewCopied: "Copied",
+    reviewUseDemo: "Use demo login",
+    showPassword: "Show password",
+    hidePassword: "Hide password",
     signInTitle: "Sign in",
     signInSubtitle: "For authorized station staff. All access is logged.",
     email: "Email address",
@@ -70,6 +80,11 @@ export const loginStrings: { en: LoginStrings; hi: LoginStrings } & Partial<Reco
     reviewId: "डेमो आईडी",
     reviewPassword: "पासवर्ड",
     reviewUpdate: "सभी सुविधाएँ ग्रैंड फ़िनाले के दिन अपडेट की जाएँगी।",
+    reviewCopy: "कॉपी करें",
+    reviewCopied: "कॉपी हो गया",
+    reviewUseDemo: "डेमो लॉगिन भरें",
+    showPassword: "पासवर्ड दिखाएँ",
+    hidePassword: "पासवर्ड छिपाएँ",
     signInTitle: "साइन इन करें",
     signInSubtitle: "केवल अधिकृत थाना कर्मियों के लिए। हर पहुँच का रिकॉर्ड रखा जाता है।",
     email: "ईमेल पता",

@@ -63,7 +63,7 @@ export default async function StatementPage({ params, searchParams }: { params: 
         meta={
           <>
             <Badge tone={s.status === "completed" ? "green" : s.status === "in_progress" ? "blue" : "slate"}>{s.status === "in_progress" ? tr("In progress — {step}", { step: trDyn(tr, STEP_LABELS[s.current_step]) }) : s.status === "completed" ? tr("Completed") : tr("Abandoned")}</Badge>
-            {caseRow ? <Link href={`/cases/${caseRow.id}`} className="text-sm font-medium text-[#1B6650] hover:underline">{caseRow.reference}</Link> : <span className="text-xs text-slate-500">{tr("Not yet linked to a case")}</span>}
+            {caseRow ? <Link href={`/cases/${caseRow.id}`} className="text-sm font-medium text-[#111216] hover:underline">{caseRow.reference}</Link> : <span className="text-xs text-slate-500">{tr("Not yet linked to a case")}</span>}
           </>
         }
         actions={
@@ -164,7 +164,7 @@ export default async function StatementPage({ params, searchParams }: { params: 
                     <Td>{t.created_by_name}</Td>
                     <Td>{formatDate(t.created_at, { time: true, lang })}</Td>
                     <Td className="max-w-xs text-xs">{t.note ?? "—"}{t.uncertainty_note && <span className="block text-amber-800">{tr("Uncertain:")} {t.uncertainty_note}</span>}</Td>
-                    <Td>{t.version > 1 ? <Link className="text-[#1B6650] hover:underline" href={`/statements/${s.id}?a=${t.version - 1}&b=${t.version}#transcripts`}>{tr("vs v{n}", { n: t.version - 1 })}</Link> : "—"}</Td>
+                    <Td>{t.version > 1 ? <Link className="text-[#111216] hover:underline" href={`/statements/${s.id}?a=${t.version - 1}&b=${t.version}#transcripts`}>{tr("vs v{n}", { n: t.version - 1 })}</Link> : "—"}</Td>
                   </tr>
                 ))}
               </tbody>
@@ -200,7 +200,7 @@ export default async function StatementPage({ params, searchParams }: { params: 
               <li key={d.id} className="flex flex-wrap items-center gap-2 text-sm">
                 <DraftStatusBadge status={d.status} />
                 <span className="text-slate-700">{tr("Version {n} · updated {date}", { n: d.current_version, date: formatDate(d.updated_at, { time: true, lang }) })}</span>
-                <Link href={`/statements/${s.id}/review?draft=${d.id}`} className="font-medium text-[#1B6650] hover:underline">{tr("Open review")}</Link>
+                <Link href={`/statements/${s.id}/review?draft=${d.id}`} className="font-medium text-[#111216] hover:underline">{tr("Open review")}</Link>
               </li>
             ))}
           </ul>

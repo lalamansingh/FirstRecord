@@ -72,7 +72,7 @@ export function ComplaintForm({
               {tr("Save this tracking code. You will need it, with your phone number, to check the status.")}
             </p>
             <div className="mt-4 flex flex-wrap items-center gap-3">
-              <code className="rounded-lg border border-slate-300 bg-slate-50 px-4 py-2 font-mono text-lg font-semibold tracking-wider text-navy-900">
+              <code className="rounded-full border border-[#c9f3dd] bg-[#e7f6e9] px-4 py-2 font-mono text-lg font-semibold tracking-wider text-navy-900">
                 {state.trackingCode}
               </code>
               <button
@@ -183,7 +183,7 @@ export function ComplaintForm({
 
       <div className="mt-7 border-t border-slate-100 pt-6">
         <label className={cx("flex items-start gap-3 rounded-lg border p-4 text-sm leading-6", fe.consent ? "border-red-300 bg-red-50/60" : "border-slate-200 bg-slate-50")}>
-          <input type="checkbox" name="consent" required className="mt-1 h-4 w-4 shrink-0 accent-navy-800" aria-describedby={fe.consent ? "consent-error" : undefined} />
+          <input type="checkbox" name="consent" required className="mt-1 h-4 w-4 shrink-0 accent-[#111216]" aria-describedby={fe.consent ? "consent-error" : undefined} />
           <span className="text-slate-800">
             {tr("I confirm the information is true to the best of my knowledge. I understand this is a complaint submission, not a registered FIR, and that police staff will verify it and may contact me.")}
           </span>

@@ -7,7 +7,7 @@ import { trackComplaintAction, type TrackState } from "@/app/complaint/actions";
 import { buttonClass, inputClass, cx } from "@/components/ui";
 
 const STATUS_STYLE: Record<string, string> = {
-  submitted: "bg-[#EFF8FF] text-[#175CD3] ring-[#B2DDFF]",
+  submitted: "bg-[#e7f6e9] text-[#111216] ring-[#c9f3dd]",
   under_verification: "bg-amber-50 text-amber-900 ring-amber-200",
   verified: "bg-emerald-50 text-emerald-800 ring-emerald-200",
   converted: "bg-emerald-50 text-emerald-800 ring-emerald-200",
@@ -82,7 +82,7 @@ export function TrackForm({ initialCode = "" }: { initialCode?: string }) {
               <ol className="mt-5 grid grid-cols-4 gap-2" aria-label={tr("Progress")}>
                 {STEPS.map((s, i) => (
                   <li key={s} className="min-w-0">
-                    <div className={cx("h-1.5 rounded-full", i <= stepIndex ? "bg-navy-700" : "bg-slate-200")} />
+                    <div className={cx("h-1.5 rounded-full", i <= stepIndex ? "bg-[#19c37d]" : "bg-[#e6e4de]")} />
                     <p className={cx("mt-1.5 truncate text-xs", i <= stepIndex ? "font-medium text-slate-800" : "text-slate-500")}>
                       {tr(({ submitted: "Submitted", under_verification: "Under verification", verified: "Verified", converted: "Case opened" } as const)[s])}
                     </p>
