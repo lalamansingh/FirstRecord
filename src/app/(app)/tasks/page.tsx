@@ -142,7 +142,7 @@ export default async function TasksPage({ searchParams }: { searchParams: Promis
             </>
           )}
           <button type="submit" className={buttonClass("secondary", "sm")}>{tr("Apply filters")}</button>
-          {hasFilters && <Link href={qs({ caseId: null, assignee: null, status: null, type: null, priority: null, q: null, page: null })} className="text-xs text-[#1F4E9C] hover:underline">{tr("Clear filters")}</Link>}
+          {hasFilters && <Link href={qs({ caseId: null, assignee: null, status: null, type: null, priority: null, q: null, page: null })} className="text-xs text-[#1B6650] hover:underline">{tr("Clear filters")}</Link>}
         </div>
       </form>
 
@@ -172,10 +172,10 @@ export default async function TasksPage({ searchParams }: { searchParams: Promis
                 return (
                   <tr key={t.id} className="hover:bg-slate-50">
                     <Td>
-                      <Link href={`/tasks/${t.id}`} className="font-medium text-slate-900 hover:text-[#183E7C] hover:underline">{t.title}</Link>
+                      <Link href={`/tasks/${t.id}`} className="font-medium text-slate-900 hover:text-[#0F4636] hover:underline">{t.title}</Link>
                       <p className="text-xs text-slate-500">{trDyn(tr, taskTypeLabel(t.task_type))}</p>
                     </Td>
-                    <Td>{t.case_id ? <Link href={`/cases/${t.case_id}`} className="text-[#1F4E9C] hover:underline">{t.case_reference}</Link> : <span className="text-slate-400">—</span>}</Td>
+                    <Td>{t.case_id ? <Link href={`/cases/${t.case_id}`} className="text-[#1B6650] hover:underline">{t.case_reference}</Link> : <span className="text-slate-400">—</span>}</Td>
                     <Td><Badge tone={st.color}>{st.label}</Badge></Td>
                     <Td><PriorityBadge priority={t.priority} /></Td>
                     <Td>{t.assignee_name ?? <span className="text-slate-400">{tr("Unassigned")}</span>}</Td>
@@ -208,7 +208,7 @@ export default async function TasksPage({ searchParams }: { searchParams: Promis
                     const allowed = (wf.transitions[t.status] ?? []).map((k) => ({ key: k, label: stateOf(wf, k).label }));
                     return (
                       <li key={t.id} className="rounded-md border border-slate-200 bg-white p-3 shadow-sm">
-                        <Link href={`/tasks/${t.id}`} className="text-sm font-medium text-slate-900 hover:text-[#183E7C] hover:underline">{t.title}</Link>
+                        <Link href={`/tasks/${t.id}`} className="text-sm font-medium text-slate-900 hover:text-[#0F4636] hover:underline">{t.title}</Link>
                         <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-xs text-slate-500">
                           <PriorityBadge priority={t.priority} />
                           {t.case_reference && <span>{t.case_reference}</span>}

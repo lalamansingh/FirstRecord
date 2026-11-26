@@ -129,7 +129,7 @@ export function CaseTable({
             </select>
           </div>
           <SubmitButton size="sm">{tr("Apply")}</SubmitButton>
-          <button type="button" className="text-sm text-[#1F4E9C] underline" onClick={() => setSelected(new Set())}>
+          <button type="button" className="text-sm text-[#1B6650] underline" onClick={() => setSelected(new Set())}>
             {tr("Clear selection")}
           </button>
         </ActionForm>
@@ -149,7 +149,7 @@ export function CaseTable({
             )}
             <div className="min-w-0 flex-1">
               <div className="flex items-baseline justify-between gap-3">
-                <Link href={`/cases/${r.id}`} className="font-mono text-xs font-semibold text-[#1F4E9C] hover:underline">
+                <Link href={`/cases/${r.id}`} className="font-mono text-xs font-semibold text-[#1B6650] hover:underline">
                   {r.reference}
                 </Link>
                 <span className="shrink-0 text-xs text-slate-500" title={formatDate(r.updated_at, { time: true, lang })}>
@@ -225,7 +225,7 @@ export function CaseTable({
                   </td>
                 )}
                 <td className="border-b border-slate-100 px-3 py-3 align-top whitespace-nowrap">
-                  <Link href={`/cases/${r.id}`} className="font-mono text-xs font-semibold text-[#1F4E9C] hover:underline">
+                  <Link href={`/cases/${r.id}`} className="font-mono text-xs font-semibold text-[#1B6650] hover:underline">
                     {r.reference}
                   </Link>
                   {showStation && <p className="text-xs text-slate-500">{r.station_code}</p>}

@@ -96,7 +96,7 @@ export default async function SosPage() {
             {history.map((a) => (
               <li key={a.id} className="px-4 py-3">
                 <div className="flex items-start justify-between gap-3">
-                  <Link href={`/sos/${a.id}`} className="min-w-0 font-medium text-[#1F4E9C] hover:underline">{a.title}</Link>
+                  <Link href={`/sos/${a.id}`} className="min-w-0 font-medium text-[#1B6650] hover:underline">{a.title}</Link>
                   <SosStatusBadge status={a.status} />
                 </div>
                 <div className="mt-1 text-xs text-slate-500">{tr("Raised by {name}", { name: a.raised_by_name })} · {formatDate(a.created_at, { time: true, lang })}</div>
@@ -118,7 +118,7 @@ export default async function SosPage() {
               {history.map((a) => (
                 <tr key={a.id}>
                   <Td>
-                    <Link href={`/sos/${a.id}`} className="font-medium text-[#1F4E9C] hover:underline">{a.title}</Link>
+                    <Link href={`/sos/${a.id}`} className="font-medium text-[#1B6650] hover:underline">{a.title}</Link>
                     <div className="text-xs text-slate-500">{tr("Raised by {name}", { name: a.raised_by_name })}</div>
                   </Td>
                   <Td>{formatDate(a.created_at, { time: true, lang })}</Td>

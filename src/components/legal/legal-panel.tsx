@@ -104,7 +104,7 @@ export async function LegalPanel({ user, statementId }: { user: AuthUser; statem
       actions={
         <div className="flex flex-wrap items-center gap-2">
           {can(user, "legal.manage") && (
-            <Link href="/legal" className="text-sm font-medium text-[#1F4E9C] hover:underline">{tr("Manage catalogue")}</Link>
+            <Link href="/legal" className="text-sm font-medium text-[#1B6650] hover:underline">{tr("Manage catalogue")}</Link>
           )}
           <ActionForm action={generateSuggestionsAction}>
             <input type="hidden" name="statementId" value={statementId} />
@@ -195,7 +195,7 @@ export async function CaseProvisionsSummary({ items }: { items: { code: string; 
           <li key={`${p.statement_id}-${p.code}`} className="flex flex-wrap items-baseline gap-2 text-sm">
             <span className="font-mono font-semibold text-navy-950">{p.code}</span>
             <span className="text-slate-800">{(lang === "hi" ? provisionTitleHi(p.code) : undefined) ?? p.title}</span>
-            <Link href={`/statements/${p.statement_id}`} className="text-xs text-[#1F4E9C] hover:underline">{tr("Statement")}</Link>
+            <Link href={`/statements/${p.statement_id}`} className="text-xs text-[#1B6650] hover:underline">{tr("Statement")}</Link>
           </li>
         ))}
       </ul>

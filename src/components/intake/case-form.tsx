@@ -79,7 +79,7 @@ export function CaseForm({
                   <label className="flex items-start gap-2 text-sm">
                     <input type="checkbox" name="duplicate" value={d.id} className="mt-1" />
                     <span>
-                      <Link href={`/cases/${d.id}`} target="_blank" className="font-medium text-[#1F4E9C] hover:underline">{d.reference}</Link> — {d.title}
+                      <Link href={`/cases/${d.id}`} target="_blank" className="font-medium text-[#1B6650] hover:underline">{d.reference}</Link> — {d.title}
                       <span className="block text-xs text-slate-500">{d.reason}</span>
                     </span>
                   </label>

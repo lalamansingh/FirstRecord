@@ -14,7 +14,7 @@ export default async function ComplaintLayout({ children }: { children: React.Re
   return (
     <LangProvider lang={lang}>
       <div lang={lang} className="flex min-h-screen flex-col bg-slate-50">
-        <header className="on-navy border-b border-navy-950 bg-[#0F1E36]">
+        <header className="on-navy border-b border-navy-950 bg-[#0B3B2E]">
           <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-4 px-5 sm:px-8">
             <Link href="/complaint" className="flex min-w-0 items-center gap-3">
               <OrgLogo size={36} inverted />
