@@ -173,7 +173,6 @@ stateDiagram-v2
         PerchedAtLink --> PerchedAtLink: next command
         Docked --> BesideField: filling a field
         PerchedAtLink --> FollowsManualNav: user clicks a page
-        FollowsManualNav --> RestsByCursor: mouse still ~1.2 s
     }
     Call --> Corner: bye / हो गया / cut the call / End button
 ```
@@ -201,7 +200,7 @@ stateDiagram-v2
 
 **Reply language rule:** the reply language follows the language Gnani detects for each utterance (`hi-IN` → Hindi, `en-IN` → English). Hindi spoken with English words ("cases पर जाओ", "मेरा phone चोरी हो गया") stays Hindi. It switches only after **two clear utterances** in the other language, or immediately when you ask — short replies like "हाँ", "yes", numbers or names never flip it.
 
-**Where the mascot sits during a call:** it stays where its last action took it — perched beside the sidebar link it navigated to, or next to the field it just filled. If you navigate manually it follows to that page's link; if you rest the mouse for ~1 s it settles beside your cursor. It returns to the bottom-right corner **only** when the call ends. The green ring around the cap grows with your voice level so you can see it hears you, and after ~12 s of silence it shows a "speak a little louder" hint.
+**Where the mascot sits during a call:** it stays where its last action took it — perched beside the sidebar link it navigated to, or next to the field it just filled. If you navigate manually it follows to that page's link. It does not follow the mouse cursor. It returns to the bottom-right corner **only** when the call ends. The green ring around the cap grows with your voice level so you can see it hears you, and after ~12 s of silence it shows a "speak a little louder" hint.
 
 <details>
 <summary><b>Incident-type mapping (spoken → form value)</b></summary>
@@ -343,7 +342,7 @@ flowchart LR
 <details>
 <summary><b>Manual & browser testing</b></summary>
 
-- **Headless Chrome flows** (puppeteer-core): sign-in via *Use demo login*, every main page, ⌘K palette search, mascot intro, voice/text pipeline (navigate, open case, FIR fill, SOS fill + cancel), mascot positioning (perched at link, follows manual navigation, rests by cursor, returns home on end).
+- **Headless Chrome flows** (puppeteer-core): sign-in via *Use demo login*, every main page, ⌘K palette search, mascot intro, voice/text pipeline (navigate, open case, FIR fill, SOS fill + cancel), mascot positioning (perched at link, follows manual navigation, returns home on end).
 - **Live Gnani checks**: TTS → STT round trips in Hindi and English; language detection (`hi-IN` / `en-IN`).
 - **Deploy smoke tests**: `/api/health`, sign-in and page loads on Render after every push; Docker image built and run locally.
 - **Accessibility**: keyboard navigation, focus management, `aria-live` status for the voice assistant, reduced-motion support.

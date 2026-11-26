@@ -641,46 +641,6 @@ export function VoiceAssistant({ userName }: { userName: string }) {
     return () => clearInterval(iv);
   }, [stage]);
 
-  // ---------- cursor rest: sit beside a resting mouse pointer ----------
-  useEffect(() => {
-    if (stage !== "session") return;
-    if (window.matchMedia?.("(hover: none)").matches) return; // touch devices
-    const REST_MS = 1200;
-    const onMove = (e: PointerEvent) => {
-      if (e.pointerType && e.pointerType !== "mouse") return;
-      const pt = { x: e.clientX, y: e.clientY };
-      lastPtrRef.current = pt;
-      const anchor = restAnchorRef.current;
-      if (anchor && Math.hypot(pt.x - anchor.x, pt.y - anchor.y) < 12) return; // ignore tiny moves
-      if (restTimerRef.current) clearTimeout(restTimerRef.current);
-      restTimerRef.current = setTimeout(rest, REST_MS);
-    };
-    const rest = () => {
-      restTimerRef.current = null;
-      const last = lastPtrRef.current;
-      if (!last || stageRef.current !== "session" || busyRef.current > 0) return;
-      const under = document.elementFromPoint(last.x, last.y);
-      if (under?.closest("[data-fr-mascot]")) return; // hovering the mascot or its buttons
-      restAnchorRef.current = { ...last };
-      const size = 88;
-      const h = mascotHeight(size);
-      const { w, h: vh } = viewport();
-      const off = 28;
-      // prefer bottom-right of the cursor; flip so the cursor is never covered
-      let x = last.x + off;
-      let y = last.y + off;
-      if (x + size > w - 8) x = last.x - off - size;
-      if (y + h > vh - 8) y = last.y - off - h;
-      void moveTo({ x, y, size }, 520);
-    };
-    window.addEventListener("pointermove", onMove, { passive: true });
-    return () => {
-      window.removeEventListener("pointermove", onMove);
-      if (restTimerRef.current) clearTimeout(restTimerRef.current);
-      restTimerRef.current = null;
-    };
-  }, [stage, moveTo]);
-
   // open from anywhere
   useEffect(() => {
     const open = () => {
