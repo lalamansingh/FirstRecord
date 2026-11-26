@@ -8,6 +8,10 @@ export interface LoginStrings {
   points: { title: string; body: string }[];
   aiNote: string;
   notice: string;
+  reviewTitle?: string;
+  reviewId?: string;
+  reviewPassword?: string;
+  reviewUpdate?: string;
   signInTitle: string;
   signInSubtitle: string;
   email: string;
@@ -34,6 +38,10 @@ export const loginStrings: { en: LoginStrings; hi: LoginStrings } & Partial<Reco
     ],
     aiNote: "AI assistance only prepares drafts. It never files an FIR or makes a legal decision.",
     notice: "Hackathon prototype — not an official police system. All data is fictional.",
+    reviewTitle: "For hackathon review",
+    reviewId: "Demo ID",
+    reviewPassword: "Password",
+    reviewUpdate: "All features will be updated on the Grand Finale day.",
     signInTitle: "Sign in",
     signInSubtitle: "For authorized station staff. All access is logged.",
     email: "Email address",
@@ -58,6 +66,10 @@ export const loginStrings: { en: LoginStrings; hi: LoginStrings } & Partial<Reco
     ],
     aiNote: "AI सहायता केवल ड्राफ़्ट तैयार करती है। यह कभी एफ़आईआर दर्ज नहीं करती और न ही कोई कानूनी निर्णय लेती है।",
     notice: "हैकाथॉन प्रोटोटाइप — यह आधिकारिक पुलिस प्रणाली नहीं है। सभी डेटा काल्पनिक है।",
+    reviewTitle: "हैकाथॉन समीक्षा के लिए",
+    reviewId: "डेमो आईडी",
+    reviewPassword: "पासवर्ड",
+    reviewUpdate: "सभी सुविधाएँ ग्रैंड फ़िनाले के दिन अपडेट की जाएँगी।",
     signInTitle: "साइन इन करें",
     signInSubtitle: "केवल अधिकृत थाना कर्मियों के लिए। हर पहुँच का रिकॉर्ड रखा जाता है।",
     email: "ईमेल पता",
