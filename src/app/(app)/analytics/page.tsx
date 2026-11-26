@@ -116,7 +116,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
               </div>
             )}
             <button type="submit" className={buttonClass("secondary")}>{tr("Apply")}</button>
-            <Link href="/analytics" className="pb-2 text-xs text-[#1F4E9C] hover:underline">{tr("Reset")}</Link>
+            <Link href="/analytics" className="pb-2 text-xs text-[#1B6650] hover:underline">{tr("Reset")}</Link>
           </form>
 
           <AnalyticsBody user={user} f={f} stationScope={stationScope} tr={tr} lang={await getLang()} />

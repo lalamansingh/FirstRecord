@@ -300,7 +300,7 @@ async function OverviewTab({ user, c, wf, ip }: { user: AuthUser; c: CaseDetail;
                     </p>
                     {p.notes && <p className="mt-1 text-xs text-slate-700">{p.notes}</p>}
                     {p.statement_id && can(user, "statement.view") && (
-                      <Link href={`/statements/${p.statement_id}`} className="mt-1 inline-block text-xs text-[#1F4E9C] hover:underline">{tr("View linked statement")}</Link>
+                      <Link href={`/statements/${p.statement_id}`} className="mt-1 inline-block text-xs text-[#1B6650] hover:underline">{tr("View linked statement")}</Link>
                     )}
                   </div>
                   {can(user, "case.edit") && <EditPartyButton caseId={c.id} party={p} canPii={canPii} />}
@@ -321,7 +321,7 @@ async function OverviewTab({ user, c, wf, ip }: { user: AuthUser; c: CaseDetail;
                 {suggestions.map((s) => (
                   <li key={s.id} className="flex flex-wrap items-center justify-between gap-2 rounded bg-white px-3 py-2">
                     <div>
-                      <Link href={`/cases/${s.id}`} className="font-mono text-xs font-semibold text-[#1F4E9C] hover:underline">{s.reference}</Link>
+                      <Link href={`/cases/${s.id}`} className="font-mono text-xs font-semibold text-[#1B6650] hover:underline">{s.reference}</Link>
                       <span className="ml-2 text-sm text-slate-800">{s.title}</span>
                       <p className="text-xs text-slate-500">{s.reasons.map((r) => formatDuplicateReason(trDyn.bind(null, tr), r)).join("; ")}</p>
                     </div>
@@ -338,7 +338,7 @@ async function OverviewTab({ user, c, wf, ip }: { user: AuthUser; c: CaseDetail;
               {links.map((l) => (
                 <li key={l.id} className="flex items-center justify-between gap-2 py-2">
                   <div>
-                    <Link href={`/cases/${l.other_id}`} className="font-mono text-xs font-semibold text-[#1F4E9C] hover:underline">{l.reference}</Link>
+                    <Link href={`/cases/${l.other_id}`} className="font-mono text-xs font-semibold text-[#1B6650] hover:underline">{l.reference}</Link>
                     <span className="ml-2 text-sm text-slate-800">{l.title}</span>
                     <span className="ml-2"><Badge tone={l.link_type === "possible_duplicate" ? "amber" : "slate"}>{l.link_type === "possible_duplicate" ? tr("Possible duplicate") : "Related"}</Badge></span>
                     <span className="ml-2 text-xs text-slate-500">{stateLabel(localizeWorkflow(getWorkflow("case"), tr), l.status)}</span>
@@ -437,7 +437,7 @@ async function StatementsTab({ user, c }: { user: AuthUser; c: CaseDetail }) {
                         <Td>v{d.current_version}</Td>
                         <Td>{d.reviewed_at ? `${d.reviewer} · ${formatDate(d.reviewed_at, { lang })}` : "—"}</Td>
                         <Td className="text-right">
-                          <Link href={`/statements/${s.id}/review?draft=${d.id}`} className="text-sm font-medium text-[#1F4E9C] hover:underline">
+                          <Link href={`/statements/${s.id}/review?draft=${d.id}`} className="text-sm font-medium text-[#1B6650] hover:underline">
                             {can(user, "draft.review") && d.status !== "reviewed" ? tr("Review draft") : tr("View draft")}
                           </Link>
                         </Td>
@@ -593,7 +593,7 @@ async function RecordsTab({ user, c }: { user: AuthUser; c: CaseDetail }) {
                     <Td className="text-right">
                       <div className="flex flex-col items-end gap-1">
                         {url ? (
-                          <a href={url} className="text-sm font-medium text-[#1F4E9C] hover:underline">{tr("Download")}</a>
+                          <a href={url} className="text-sm font-medium text-[#1B6650] hover:underline">{tr("Download")}</a>
                         ) : !a.deleted_at ? (
                           <span className="inline-flex items-center gap-1 text-xs text-slate-400"><Lock className="h-3 w-3" aria-hidden />{tr("Download restricted")}</span>
                         ) : null}

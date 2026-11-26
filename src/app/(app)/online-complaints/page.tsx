@@ -85,7 +85,7 @@ export default async function OnlineComplaintsPage({ searchParams }: { searchPar
               {rows.map((r) => (
                 <tr key={r.id} className="hover:bg-slate-50/70">
                   <Td>
-                    <Link href={`/online-complaints/${r.id}`} className="font-mono text-[13px] font-semibold text-[#1F4E9C] hover:underline">
+                    <Link href={`/online-complaints/${r.id}`} className="font-mono text-[13px] font-semibold text-[#1B6650] hover:underline">
                       {r.tracking_code}
                     </Link>
                   </Td>

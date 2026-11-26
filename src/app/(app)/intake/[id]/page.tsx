@@ -402,7 +402,7 @@ async function TranscriptStep({ user, s, canEdit }: { user: AuthUser; s: Stateme
         <Card title={tr("Current transcript — version {n}", { n: latest.version })} description={`${trDyn(tr, TRANSCRIPT_SOURCE_LABELS[latest.source])} · ${latest.created_by_name} · ${formatDate(latest.created_at, { time: true, lang: uiLang })}`}>
           <div lang={s.language} className="max-h-[28rem] overflow-y-auto whitespace-pre-wrap text-[15px] leading-relaxed text-slate-800">{latest.text}</div>
           {latest.segments.length > 0 && <p className="mt-2 text-xs text-slate-500">{tr("{n} passage(s) linked to recording timestamps.", { n: latest.segments.length })}</p>}
-          {transcripts.length > 1 && <p className="mt-2 text-xs"><Link href={`/statements/${s.id}#transcripts`} className="text-[#1F4E9C] hover:underline">{tr("Compare all {n} versions", { n: transcripts.length })}</Link></p>}
+          {transcripts.length > 1 && <p className="mt-2 text-xs"><Link href={`/statements/${s.id}#transcripts`} className="text-[#1B6650] hover:underline">{tr("Compare all {n} versions", { n: transcripts.length })}</Link></p>}
         </Card>
         <section lang={s.language} aria-labelledby="readback-title" className="rounded-lg border border-blue-200 bg-blue-50 p-4">
           <h3 id="readback-title" className="text-sm font-semibold text-blue-950">{t(s.language, "readback.title")}</h3>
@@ -513,7 +513,7 @@ async function DraftStep({ user, s, canEdit }: { user: AuthUser; s: StatementRow
       {draft && <NextLink id={s.id} step="review" label={tr("Continue to review")} />}
       {!draft && canEdit && s.transcript_confirmed_at && (
         <p className="text-right text-xs text-slate-500">
-          {tr("A draft is optional for creating a case.")} <Link href={`/intake/${s.id}?step=case`} className="text-[#1F4E9C] hover:underline">{tr("Skip to case creation")}</Link>
+          {tr("A draft is optional for creating a case.")} <Link href={`/intake/${s.id}?step=case`} className="text-[#1B6650] hover:underline">{tr("Skip to case creation")}</Link>
         </p>
       )}
     </div>

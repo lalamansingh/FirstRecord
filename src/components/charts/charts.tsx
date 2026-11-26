@@ -9,7 +9,7 @@ import { useState } from "react";
 import { useT } from "@/lib/i18n/client";
 import type { MsgKey } from "@/lib/i18n/messages";
 
-const SERIES = "#1f3a68"; // brand navy; single-hue charts
+const SERIES = "#14523F"; // brand deep green; single-hue charts
 
 export interface Datum {
   label: string;
@@ -148,8 +148,8 @@ export function ColumnChart({
           const y = 6 + plotH - (t / niceMax) * plotH;
           return (
             <g key={t}>
-              <line x1={padL} x2={W} y1={y} y2={y} stroke="#eaecf0" strokeWidth={1} strokeDasharray={t === 0 ? undefined : "3 3"} />
-              <text x={padL - 6} y={y + 3} textAnchor="end" fontSize={11} fill="#667085">{fmt(t)}</text>
+              <line x1={padL} x2={W} y1={y} y2={y} stroke="#e4eae7" strokeWidth={1} strokeDasharray={t === 0 ? undefined : "3 3"} />
+              <text x={padL - 6} y={y + 3} textAnchor="end" fontSize={11} fill="#6f7a75">{fmt(t)}</text>
             </g>
           );
         })}
@@ -161,7 +161,7 @@ export function ColumnChart({
           const path = h > 0 ? `M${x},${y + h} V${y + r} Q${x},${y} ${x + r},${y} H${x + barW - r} Q${x + barW},${y} ${x + barW},${y + r} V${y + h} Z` : "";
           return (
             <g key={d.label}>
-              {active === i && <rect x={padL + i * band} y={6} width={band} height={plotH} fill="#f2f4f7" rx={2} />}
+              {active === i && <rect x={padL + i * band} y={6} width={band} height={plotH} fill="#f0f3f1" rx={2} />}
               {path && <path d={path} fill={SERIES} opacity={active === null || active === i ? 1 : 0.55} />}
               {/* hit target larger than the mark */}
               <rect
@@ -180,7 +180,7 @@ export function ColumnChart({
                 strokeWidth={2}
               />
               {i % labelEvery === 0 && (
-                <text x={padL + i * band + band / 2} y={height - 6} textAnchor="middle" fontSize={11} fill="#667085">{d.label}</text>
+                <text x={padL + i * band + band / 2} y={height - 6} textAnchor="middle" fontSize={11} fill="#6f7a75">{d.label}</text>
               )}
             </g>
           );

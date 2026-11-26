@@ -302,7 +302,7 @@ export function AppShell({
               >
                 <Bell className="h-5 w-5" />
                 {unread > 0 && (
-                  <span className="absolute right-0.5 top-0.5 min-w-[1.1rem] rounded-full bg-[var(--danger)] px-1 text-center text-[10px] font-semibold leading-[1.1rem] text-white ring-2 ring-white">
+                  <span className="absolute right-0.5 top-0.5 min-w-[1.1rem] rounded-full bg-[var(--accent)] px-1 text-center text-[10px] font-semibold leading-[1.1rem] text-white ring-2 ring-white">
                     {unread > 99 ? "99+" : unread}
                   </span>
                 )}
@@ -338,7 +338,6 @@ function NavLink({ item, label, active, mini, danger }: { item: NavItem; label: 
           active ? "bg-[var(--sidebar-active)] text-white" : "text-[var(--sidebar-item)] hover:bg-white/[0.05] hover:text-white",
         )}
       >
-        {active && <span className="absolute inset-y-1.5 left-0 w-[2px] rounded-r bg-[var(--sidebar-accent)]" aria-hidden />}
         <Icon
           className={cx("h-[18px] w-[18px] shrink-0", active ? "text-white" : "text-[var(--sidebar-label)] group-hover:text-[var(--sidebar-item)]")}
           aria-hidden
@@ -349,7 +348,7 @@ function NavLink({ item, label, active, mini, danger }: { item: NavItem; label: 
           <span
             className={cx(
               "ml-auto rounded-full px-1.5 text-[11px] font-semibold tabular-nums leading-5",
-              "bg-white/15 text-white",
+              "bg-[var(--accent)] text-white",
               mini && "lg:absolute lg:right-1.5 lg:top-1 lg:ml-0 lg:min-w-4 lg:px-1 lg:text-[9px] lg:leading-4",
             )}
           >

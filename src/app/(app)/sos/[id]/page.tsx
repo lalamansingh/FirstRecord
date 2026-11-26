@@ -67,7 +67,7 @@ export default async function SosAlertPage({ params }: { params: Promise<{ id: s
                       <MapPin className="h-4 w-4 text-slate-400" aria-hidden />
                       {alert.location_text || (alert.lat == null ? tr("Not given") : "")}
                       {alert.lat != null && alert.lng != null && (
-                        <a className="text-[#1F4E9C] underline" href={`https://www.google.com/maps?q=${alert.lat},${alert.lng}`} target="_blank" rel="noopener noreferrer">
+                        <a className="text-[#1B6650] underline" href={`https://www.google.com/maps?q=${alert.lat},${alert.lng}`} target="_blank" rel="noopener noreferrer">
                           {tr("Open map")}
                         </a>
                       )}

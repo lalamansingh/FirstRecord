@@ -40,8 +40,8 @@ export default async function IntakeListPage({ searchParams }: { searchParams: P
       />
       {stationScope && (
         <div className="mb-3 flex gap-3 text-sm">
-          <Link href={`/intake?view=${view}`} aria-current={!mineOnly ? "true" : undefined} className={!mineOnly ? "font-semibold text-slate-900" : "text-[#1F4E9C] hover:underline"}>{tr("Station")}</Link>
-          <Link href={`/intake?view=${view}&mine=1`} aria-current={mineOnly ? "true" : undefined} className={mineOnly ? "font-semibold text-slate-900" : "text-[#1F4E9C] hover:underline"}>{tr("Started by me")}</Link>
+          <Link href={`/intake?view=${view}`} aria-current={!mineOnly ? "true" : undefined} className={!mineOnly ? "font-semibold text-slate-900" : "text-[#1B6650] hover:underline"}>{tr("Station")}</Link>
+          <Link href={`/intake?view=${view}&mine=1`} aria-current={mineOnly ? "true" : undefined} className={mineOnly ? "font-semibold text-slate-900" : "text-[#1B6650] hover:underline"}>{tr("Started by me")}</Link>
         </div>
       )}
       <Card padded={false}>
@@ -74,7 +74,7 @@ export default async function IntakeListPage({ searchParams }: { searchParams: P
                   <Td>{maskPii(user, r.speaker_name) || <span className="text-slate-400">{tr("Not recorded")}</span>}</Td>
                   <Td>{r.incident_type ?? <span className="text-slate-400">{tr("Not yet known")}</span>}</Td>
                   <Td>{r.capture_method ? trDyn(tr, CAPTURE_METHOD_LABELS[r.capture_method]) : <span className="text-slate-400">{tr("Not chosen")}</span>}</Td>
-                  <Td>{view === "completed" ? (r.case_reference && r.case_id ? <Link className="font-medium text-[#1F4E9C] hover:underline" href={`/cases/${r.case_id}`}>{r.case_reference}</Link> : "—") : <Badge tone="blue">{tr(STEP_LABELS[r.current_step] as MsgKey)}</Badge>}</Td>
+                  <Td>{view === "completed" ? (r.case_reference && r.case_id ? <Link className="font-medium text-[#1B6650] hover:underline" href={`/cases/${r.case_id}`}>{r.case_reference}</Link> : "—") : <Badge tone="blue">{tr(STEP_LABELS[r.current_step] as MsgKey)}</Badge>}</Td>
                   <Td>{r.creator_name}</Td>
                   <Td>{formatRelative(r.updated_at, lang)}</Td>
                   <Td className="text-right">

@@ -91,7 +91,7 @@ export default async function UpdatesPage({ searchParams }: { searchParams: Prom
                       )}
                     </div>
                     <h2 className={cx("mt-1.5 text-[15px] leading-6", isUnread ? "font-semibold text-navy-900" : "font-medium text-slate-800")}>
-                      <Link href={`/updates/${b.id}`} className="after:absolute after:inset-0 hover:text-[#183E7C] focus-visible:outline-none">
+                      <Link href={`/updates/${b.id}`} className="after:absolute after:inset-0 hover:text-[#0F4636] focus-visible:outline-none">
                         <span className={cx("mr-2 inline-block h-2 w-2 shrink-0 rounded-full align-middle", isUnread ? "bg-navy-700" : "bg-transparent")} aria-hidden />
                         {b.title}
                         {isUnread && <span className="sr-only"> ({tr("unread")})</span>}

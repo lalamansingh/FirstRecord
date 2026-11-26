@@ -285,7 +285,7 @@ export function Notice({
 }) {
   const styles = {
     blue: "border-[var(--info-border)] bg-[var(--info-bg)] text-slate-800 [&_p:first-child]:text-[#194185]",
-    amber: "border-[var(--warning-border)] bg-[var(--warning-bg)] text-slate-800 [&_p:first-child]:text-[#93370d]",
+    amber: "border-[var(--warning-border)] bg-[var(--warning-bg)] text-slate-800 [&_p:first-child]:text-[#7a3417]",
     red: "border-[var(--danger-border)] bg-[var(--danger-bg)] text-slate-800 [&_p:first-child]:text-[#912018]",
     green: "border-[var(--success-border)] bg-[var(--success-bg)] text-slate-800 [&_p:first-child]:text-[#085d3a]",
     slate: "border-slate-200 bg-slate-50 text-slate-800",
@@ -334,7 +334,7 @@ export function Th({ children, className }: { children?: ReactNode; className?: 
     <th
       scope="col"
       className={cx(
-        "whitespace-nowrap border-b border-[var(--border-subtle)] bg-slate-50 px-4 py-2.5 text-left text-xs font-medium text-slate-600 first:pl-5 last:pr-5",
+        "whitespace-nowrap border-b border-[var(--border-subtle)] bg-[var(--surface-sunken)] px-4 py-2.5 text-left text-xs font-semibold text-slate-600 first:pl-5 last:pr-5",
         className,
       )}
     >
@@ -373,7 +373,7 @@ export function Stat({
       <div className="min-w-0">
         <p className="text-[13px] font-medium text-slate-600">{label}</p>
         <div className="mt-2 flex items-baseline gap-2">
-          <p className={cx("text-[26px] font-semibold leading-none tracking-[-0.01em] tabular-nums", tone === "red" ? "text-[var(--danger)]" : tone === "amber" ? "text-[var(--warning)]" : tone === "green" ? "text-[var(--success)]" : "text-slate-900")}>{value}</p>
+          <p className={cx("font-[family-name:var(--font-display)] text-[28px] font-semibold leading-none tracking-[-0.01em] tabular-nums", tone === "red" ? "text-[var(--danger)]" : tone === "amber" ? "text-[var(--accent)]" : tone === "green" ? "text-[var(--success)]" : "text-slate-900")}>{value}</p>
           {trend && <TrendChip {...trend} />}
         </div>
         {hint && <p className="mt-2 text-xs leading-5 text-slate-600">{hint}</p>}
@@ -420,7 +420,7 @@ export function Sparkline({ data, tone, className }: { data: number[]; tone?: "r
   const span = max - min || 1;
   const pts = data.map((v, i) => [(i / (data.length - 1)) * w, h - 2 - ((v - min) / span) * (h - 4)] as const);
   const d = pts.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
-  const stroke = tone === "red" ? "#b42318" : tone === "amber" ? "#b54708" : tone === "green" ? "#067647" : "#3e5f94";
+  const stroke = tone === "red" ? "#b42318" : tone === "amber" ? "#bb5427" : tone === "green" ? "#067647" : "#2A7A5F";
   return (
     <svg viewBox={`0 0 ${w} ${h}`} className={cx("mt-3 h-7 w-full max-w-[140px]", className)} aria-hidden preserveAspectRatio="none">
       <path d={d} fill="none" stroke={stroke} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />

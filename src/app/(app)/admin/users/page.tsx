@@ -101,7 +101,7 @@ export default async function UsersPage({ searchParams }: { searchParams: Promis
                 return (
                   <tr key={u.id} className="hover:bg-slate-50">
                     <Td>
-                      <Link href={`/admin/users/${u.id}`} className="font-medium text-[#1F4E9C] hover:underline">{u.name}</Link>
+                      <Link href={`/admin/users/${u.id}`} className="font-medium text-[#1B6650] hover:underline">{u.name}</Link>
                       <p className="text-xs text-slate-500">{u.email}{u.badge_number ? ` · ${u.badge_number}` : ""}</p>
                     </Td>
                     <Td>{tr(u.role_name as MsgKey)}</Td>

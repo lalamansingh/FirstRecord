@@ -434,7 +434,7 @@ export async function RetentionSection({ user }: { user: AuthUser }) {
               {flagged.map((f) => (
                 <tr key={`${f.type}-${f.id}`}>
                   <Td><p className="font-medium text-slate-900">{f.label}</p><p className="text-xs text-slate-500">{f.type.replace("_", " ")}</p></Td>
-                  <Td>{f.caseId ? <Link href={`/cases/${f.caseId}?tab=records`} className="text-[#1F4E9C] hover:underline">{f.caseReference}</Link> : "—"}</Td>
+                  <Td>{f.caseId ? <Link href={`/cases/${f.caseId}?tab=records`} className="text-[#1B6650] hover:underline">{f.caseReference}</Link> : "—"}</Td>
                   <Td className="text-xs">{formatDate(f.date, { lang })}</Td>
                   <Td className="text-xs">{f.sizeBytes ? formatBytes(f.sizeBytes) : "—"}</Td>
                   <Td>
