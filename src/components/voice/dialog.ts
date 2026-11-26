@@ -4,7 +4,7 @@
  * Reply language follows the user per utterance (pure Hindi → Hindi; English or Hinglish → English)
  * and stays sticky until the user clearly switches. All spoken strings live in SAY / SAY_EN.
  */
-import type { Dialog, DialogContext, DialogTurn, VoiceAction, VoiceField } from "./types";
+import type { Dialog, DialogContext, DialogSnapshot, DialogTurn, VoiceAction, VoiceField } from "./types";
 
 export type ReplyLang = "hi" | "en";
 
@@ -556,6 +556,9 @@ const CONSEQUENTIAL_STEPS = new Set(["transcript", "review", "case"]);
 const STRICT_NAV_VERB = /(^|\s)(जाओ|जाइए|जाएं|चलो|चलिए|ले चलो|खोलो|खोलिए|खोल दो|open|go to|go|take me to|take me|navigate to|show me)(\s|$)/;
 
 /* ---------------------------------------------------------------- dialog */
+
+/** Bump when State/FirState/WizardState change shape incompatibly. */
+const SNAPSHOT_VERSION = 1;
 
 export function createDialog(ctx: DialogContext, opts: { now?: () => Date } = {}): Dialog {
   const now = opts.now ?? (() => new Date());
@@ -1115,6 +1118,23 @@ export function createDialog(ctx: DialogContext, opts: { now?: () => Date } = {}
       if (state.mode !== "wizard") state = w;
       if (w.step === step && w.awaiting !== null) return null; // already prompted for this step
       return wizardPrompt(w, step);
+    },
+
+    serialize(): DialogSnapshot {
+      return { v: SNAPSHOT_VERSION, state, paused, needsRefill, misses, lang, otherLangStreak };
+    },
+
+    restore(snap: DialogSnapshot): boolean {
+      if (!snap || snap.v !== SNAPSHOT_VERSION) return false;
+      const st = snap.state as State | undefined;
+      if (!st || typeof st !== "object" || typeof (st as { mode?: unknown }).mode !== "string") return false;
+      state = st;
+      paused = (snap.paused as FirState | null) ?? null;
+      needsRefill = !!snap.needsRefill;
+      misses = typeof snap.misses === "number" ? snap.misses : 0;
+      lang = snap.lang === "en" ? "en" : "hi";
+      otherLangStreak = typeof snap.otherLangStreak === "number" ? snap.otherLangStreak : 0;
+      return true;
     },
 
     onActionResult({ action, ok }) {

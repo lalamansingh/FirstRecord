@@ -23,6 +23,7 @@ export const hiVoice = {
   "Couldn't reach the voice service.": "वॉइस सेवा से संपर्क नहीं हो पाया।",
   "I'm listening. Please speak a little louder.": "मैं सुन रहा हूँ — थोड़ा ज़ोर से बोलिए।",
   "Microphone unavailable. Allow mic access to talk to me.": "माइक उपलब्ध नहीं है। मुझसे बात करने के लिए माइक की अनुमति दें।",
+  "Tap the cap to continue our conversation.": "बातचीत जारी रखने के लिए टोपी पर टैप करें।",
 } as const;
 
 type VoiceKey = keyof typeof hiVoice;

@@ -15,12 +15,60 @@ import { MascotStyles, type MascotMood } from "./mascot-art";
 import { createAutomation, readIntakeStepForDialog, readVoiceFields } from "./automation";
 import * as audio from "./audio";
 import { createDialog } from "./dialog";
-import { VOICE_EVENTS, type AudioEngine, type Dialog, type DialogTurn, type VoiceAction, type VoiceTarget } from "./types";
+import { VOICE_EVENTS, type AudioEngine, type Dialog, type DialogSnapshot, type DialogTurn, type VoiceAction, type VoiceTarget } from "./types";
 import { useT } from "@/lib/i18n/client";
 
 type Stage = "home" | "intro" | "session";
 type Lang = DialogTurn["lang"];
 const INTRO_KEY = "fr_mascot_intro_v1";
+/** Active call snapshot, so a call survives full page loads (e.g. a hard navigation). */
+const SESSION_KEY = "fr_voice_session_v1";
+const RESUME_WINDOW_MS = 2 * 60 * 1000;
+
+interface SavedSession {
+  at: number;
+  user: string;
+  snap: DialogSnapshot;
+  pos: MascotPos;
+  muted: boolean;
+}
+
+function readSavedSession(user: string): SavedSession | null {
+  try {
+    const raw = sessionStorage.getItem(SESSION_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw) as SavedSession;
+    if (!s || s.user !== user || typeof s.at !== "number" || Date.now() - s.at > RESUME_WINDOW_MS || !s.snap) {
+      sessionStorage.removeItem(SESSION_KEY);
+      return null;
+    }
+    return s;
+  } catch {
+    return null;
+  }
+}
+
+function clearSavedSession() {
+  try {
+    sessionStorage.removeItem(SESSION_KEY);
+  } catch {
+    /* storage blocked */
+  }
+}
+
+/** True when audio can start without a fresh user gesture (after a reload it usually can't). */
+function audioCanAutoplay(): boolean {
+  try {
+    const AC = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    if (!AC) return false;
+    const c = new AC();
+    const ok = c.state === "running";
+    void c.close();
+    return ok;
+  } catch {
+    return false;
+  }
+}
 const HOME_SIZE = 72;
 const CENTER_SIZE = 150;
 const DOCK_SIZE = 104;
@@ -116,6 +164,9 @@ export function VoiceAssistant({ userName }: { userName: string }) {
   /** intake step tracking (announce new steps once) */
   const lastStepRef = useRef<string | null>(null);
   const announcedStepRef = useRef<string | null>(null);
+  /** After a reload the browser needs a tap before audio/mic can run; the call waits for it. */
+  const needsTapRef = useRef(false);
+  const resumedRef = useRef(false);
   const moodRef = useRef<MascotMood>("idle");
   const levelTick = useRef(0);
   /** last navigation the assistant itself started (to tell manual navigation apart) */
@@ -177,7 +228,7 @@ export function VoiceAssistant({ userName }: { userName: string }) {
     const key = `${INTRO_KEY}:${userName}`;
     let timer: ReturnType<typeof setTimeout> | undefined;
     try {
-      if (!sessionStorage.getItem(key)) {
+      if (!sessionStorage.getItem(key) && !readSavedSession(userName)) {
         timer = setTimeout(async () => {
           if (stageRef.current !== "home" || sessionStorage.getItem(key)) return;
           // Mark as shown only when the intro really starts (survives StrictMode double effects).
@@ -291,6 +342,8 @@ export function VoiceAssistant({ userName }: { userName: string }) {
   const endSession = useCallback(async () => {
     if (stageRef.current !== "session") return;
     stageRef.current = "home";
+    needsTapRef.current = false;
+    clearSavedSession();
     automationRef.current?.abort();
     engineRef.current?.interrupt();
     engineRef.current?.stop();
@@ -396,25 +449,8 @@ export function VoiceAssistant({ userName }: { userName: string }) {
   );
 
   // ---------- start session ----------
-  const startSession = useCallback(async () => {
-    if (stageRef.current === "session") return;
-    stageRef.current = "session";
-    setStage("session");
-    setMuted(false);
-    mutedRef.current = false;
-    setStatus(tr("Connecting…"));
-    setMood("thinking");
-    await sleep(30);
-    await moveTo(dockPos(), 700);
-
-    const dialog = createDialog({
-      userName,
-      pathname: () => pathRef.current || window.location.pathname,
-      intakeStep: () => readIntakeStepForDialog(),
-    });
-    lastStepRef.current = readIntakeStepForDialog();
-    announcedStepRef.current = lastStepRef.current;
-    dialogRef.current = dialog;
+  /** Start mic capture + playback (needs a user gesture in most browsers). */
+  const startEngine = useCallback(async () => {
     const engine = audio.createAudioEngine();
     engineRef.current = engine;
     try {
@@ -433,14 +469,109 @@ export function VoiceAssistant({ userName }: { userName: string }) {
         onIdleHint: () => showHint(tr("I'm listening. Please speak a little louder."), 4000),
       });
       setMicAvailable(true);
+      return true;
     } catch {
       setMicAvailable(false);
       showHint(tr("Microphone unavailable. Allow mic access to talk to me."));
+      return false;
     }
+  }, [tr, onUtterance, showHint]);
+
+  const makeDialog = useCallback(
+    () =>
+      createDialog({
+        userName,
+        pathname: () => pathRef.current || window.location.pathname,
+        intakeStep: () => readIntakeStepForDialog(),
+      }),
+    [userName],
+  );
+
+  const startSession = useCallback(async () => {
+    if (stageRef.current === "session") return;
+    stageRef.current = "session";
+    setStage("session");
+    setMuted(false);
+    mutedRef.current = false;
+    setStatus(tr("Connecting…"));
+    setMood("thinking");
+    await sleep(30);
+    await moveTo(dockPos(), 700);
+
+    const dialog = makeDialog();
+    lastStepRef.current = readIntakeStepForDialog();
+    announcedStepRef.current = lastStepRef.current;
+    dialogRef.current = dialog;
+    await startEngine();
     if (stageRef.current !== "session") return;
     const greet = dialog.greet();
     queueRef.current = queueRef.current.then(() => runTurnRef.current(greet));
-  }, [tr, userName, moveTo, onUtterance, showHint]);
+  }, [tr, moveTo, makeDialog, startEngine]);
+
+  /** Resume a call after a full page load: same conversation state, same spot on screen. */
+  const resumeSession = useCallback(
+    async (saved: SavedSession) => {
+      if (stageRef.current === "session") return;
+      const dialog = makeDialog();
+      if (!dialog.restore?.(saved.snap)) {
+        clearSavedSession();
+        return;
+      }
+      stageRef.current = "session";
+      setStage("session");
+      setMuted(saved.muted);
+      mutedRef.current = saved.muted;
+      setPos(clampPos(saved.pos));
+      dialogRef.current = dialog;
+      // Let the step poller announce whatever step the page is on now.
+      lastStepRef.current = null;
+      announcedStepRef.current = null;
+      if (!audioCanAutoplay()) {
+        needsTapRef.current = true;
+        setMood("idle");
+        setStatus(tr("Tap the cap to continue our conversation."));
+        showHint(tr("Tap the cap to continue our conversation."), 60000);
+        return;
+      }
+      await startEngine();
+      if (stageRef.current === "session") idleStatus();
+    },
+    [tr, makeDialog, startEngine, showHint, idleStatus],
+  );
+
+  useEffect(() => {
+    if (!mounted || resumedRef.current) return;
+    // Deferred so it runs once even under StrictMode's double effects.
+    const t = setTimeout(() => {
+      if (resumedRef.current) return;
+      resumedRef.current = true;
+      const saved = readSavedSession(userName);
+      if (saved) void resumeSession(saved);
+    }, 0);
+    return () => clearTimeout(t);
+  }, [mounted, userName, resumeSession]);
+
+  // ---------- persist the active call so it survives reloads ----------
+  useEffect(() => {
+    if (stage !== "session") return;
+    const persist = () => {
+      const dlg = dialogRef.current;
+      if (stageRef.current !== "session" || !dlg?.serialize) return;
+      try {
+        const saved: SavedSession = { at: Date.now(), user: userName, snap: dlg.serialize(), pos: posRef.current, muted: mutedRef.current };
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(saved));
+      } catch {
+        /* storage blocked */
+      }
+    };
+    persist();
+    const iv = setInterval(persist, 1000);
+    window.addEventListener("pagehide", persist);
+    return () => {
+      clearInterval(iv);
+      window.removeEventListener("pagehide", persist);
+    };
+  }, [stage, userName]);
 
   // ---------- manual navigation: glide to the matching sidebar link and stay ----------
   useEffect(() => {
@@ -488,7 +619,7 @@ export function VoiceAssistant({ userName }: { userName: string }) {
     let flushing = false;
     const iv = setInterval(async () => {
       const dlg = dialogRef.current;
-      if (!dlg || stageRef.current !== "session" || flushing) return;
+      if (!dlg || stageRef.current !== "session" || flushing || needsTapRef.current) return;
       if (automationRef.current?.hasPending() && readIntakeStepForDialog() === "capture") {
         flushing = true;
         busyRef.current += 1;
@@ -607,6 +738,14 @@ export function VoiceAssistant({ userName }: { userName: string }) {
   };
 
   const onMascotClick = async () => {
+    if (stage === "session" && needsTapRef.current) {
+      // First tap after a reload unlocks audio + mic; the step poller then announces the current step.
+      needsTapRef.current = false;
+      setHint("");
+      await startEngine();
+      if (stageRef.current === "session") idleStatus();
+      return;
+    }
     if (stage === "session") {
       // Tap the cap while it talks to cut it short.
       if (engineRef.current?.isSpeaking()) engineRef.current.interrupt();

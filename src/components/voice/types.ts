@@ -79,11 +79,21 @@ export interface Dialog {
   handle(transcript: string, opts?: { language?: string }): DialogTurn;
   /** Called when automation reports a failure (e.g. case not found). */
   onActionResult(result: { action: VoiceAction; ok: boolean; detail?: string }): DialogTurn | null;
+  /** Snapshot of the conversation (flow state, collected slots, reply language) — JSON-safe, for surviving page reloads. */
+  serialize?(): DialogSnapshot;
+  /** Restore a snapshot produced by serialize(). Ignores snapshots from an incompatible version. */
+  restore?(snapshot: DialogSnapshot): boolean;
   /**
    * MASCOT calls this when the intake wizard lands on a new step while a session is active
    * (same step strings as DialogContext.intakeStep). Returns the prompt for that step, or null.
    */
   onIntakeStep?(step: string): DialogTurn | null;
+}
+
+/** Opaque, JSON-serialisable dialog snapshot (see Dialog.serialize). */
+export interface DialogSnapshot {
+  v: number;
+  [key: string]: unknown;
 }
 
 /** Client audio engine (audio.ts). */
