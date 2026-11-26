@@ -25,6 +25,9 @@ import { formatDate, formatRelative, isOverdue } from "@/lib/format";
 import { SectionHeading, Avatar, Card, Stat, Badge, Table, Th, Td, EmptyState, ButtonLink, Notice, KeyValue, buttonClass, inputClass } from "@/components/ui";
 import { PriorityBadge } from "@/components/i18n/localized";
 import { BarList, ColumnChart } from "@/components/charts/charts";
+import { KpiCard } from "@/components/interactive/kpi-card";
+import { ClickableRow } from "@/components/interactive/clickable-row";
+import { LiveRefresh } from "@/components/interactive/live-refresh";
 
 export async function generateMetadata() {
   return { title: trDyn(await getTr(), "Overview") };
@@ -146,10 +149,10 @@ async function CaseOverview({ user, f }: { user: AuthUser; f: AnalyticsFilters }
       <section aria-labelledby="summary-heading">
         <h2 id="summary-heading" className="sr-only">{tr("Summary")}</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <Stat label={tr("Open cases")} value={openCases} href="/cases" icon={<FolderOpen className="h-5 w-5" />} hint={stationScope ? tr("All open cases visible to you") : tr("Assigned to or created by you")} />
-          <Stat label={tr("Awaiting review")} value={awaitingReview} href={`/cases?status=${reviewState}`} icon={<ClipboardCheck className="h-5 w-5" />} hint={tr("Officer review or unreviewed drafts")} tone={awaitingReview > 0 ? "amber" : undefined} />
-          <Stat label={tr("Overdue tasks")} value={overdue} href="/tasks?quick=overdue" icon={<AlertTriangle className="h-5 w-5" />} tone={overdue > 0 ? "red" : undefined} hint={overdue > 0 ? tr("Past due date — needs action") : tr("Nothing overdue")} />
-          <Stat label={tr("Recent updates")} value={updated7d} href="/cases?sort=updated" icon={<History className="h-5 w-5" />} hint={tr("Cases updated in the last 7 days")} trend={{ value: `${updDelta > 0 ? "+" : ""}${updDelta}`, direction: updDelta > 0 ? "up" : updDelta < 0 ? "down" : "flat", label: tr("vs previous 7 days") }} />
+          <KpiCard label={tr("Open cases")} value={openCases} href="/cases" linkLabel={tr("View {label}", { label: tr("Cases") })} icon={<FolderOpen />} hint={stationScope ? tr("All open cases visible to you") : tr("Assigned to or created by you")} />
+          <KpiCard label={tr("Awaiting review")} value={awaitingReview} href={`/cases?status=${reviewState}`} linkLabel={tr("View {label}", { label: tr("Awaiting review") })} icon={<ClipboardCheck />} hint={tr("Officer review or unreviewed drafts")} tone={awaitingReview > 0 ? "attention" : undefined} />
+          <KpiCard label={tr("Overdue tasks")} value={overdue} href="/tasks?quick=overdue" linkLabel={tr("View {label}", { label: tr("Overdue tasks") })} icon={<AlertTriangle />} tone={overdue > 0 ? "red" : undefined} hint={overdue > 0 ? tr("Past due date — needs action") : tr("Nothing overdue")} />
+          <KpiCard label={tr("Recent updates")} value={updated7d} href="/cases?sort=updated" linkLabel={tr("View {label}", { label: tr("Recent updates") })} icon={<History />} hint={tr("Cases updated in the last 7 days")} trend={{ value: `${updDelta > 0 ? "+" : ""}${updDelta}`, direction: updDelta > 0 ? "up" : updDelta < 0 ? "down" : "flat", label: tr("vs previous 7 days") }} />
         </div>
       </section>
 
@@ -256,9 +259,9 @@ async function CaseOverview({ user, f }: { user: AuthUser; f: AnalyticsFilters }
                 const st = stateOf(wf, c.status);
                 const due = isOverdue(c.next_action_due);
                 return (
-                  <li key={c.id} className="px-4 py-3.5">
+                  <li key={c.id} className="relative px-4 py-3.5 transition-colors hover:bg-[#FAFAF7]">
                     <div className="flex items-baseline justify-between gap-3">
-                      <Link href={`/cases/${c.id}`} className="font-semibold text-blue-700 hover:underline">{c.reference}</Link>
+                      <Link href={`/cases/${c.id}`} className="font-mono text-[13px] font-semibold text-[#111216] after:absolute after:inset-0 after:content-[''] hover:underline">{c.reference}</Link>
                       <time dateTime={c.updated_at} className="shrink-0 text-xs text-slate-500">{formatRelative(c.updated_at, lang)}</time>
                     </div>
                     <Link href={`/cases/${c.id}`} className="mt-0.5 block break-words text-sm font-medium text-slate-900 hover:underline">{c.title}</Link>
@@ -295,8 +298,8 @@ async function CaseOverview({ user, f }: { user: AuthUser; f: AnalyticsFilters }
                   const st = stateOf(wf, c.status);
                   const due = isOverdue(c.next_action_due);
                   return (
-                    <tr key={c.id}>
-                      <Td><Link href={`/cases/${c.id}`} className="whitespace-nowrap font-semibold text-blue-700 hover:underline">{c.reference}</Link></Td>
+                    <ClickableRow key={c.id} href={`/cases/${c.id}`} label={tr("Open {ref}", { ref: `${c.reference} — ${c.title}` })}>
+                      <Td><Link href={`/cases/${c.id}`} tabIndex={-1} className="whitespace-nowrap font-mono text-[13px] font-semibold text-[#111216] hover:underline">{c.reference}</Link></Td>
                       <Td className="max-w-[18rem]"><span className="line-clamp-2">{c.title}</span></Td>
                       <Td><Badge tone={st.color}>{st.label}</Badge></Td>
                       <Td><PriorityBadge priority={c.priority} /></Td>
@@ -312,7 +315,7 @@ async function CaseOverview({ user, f }: { user: AuthUser; f: AnalyticsFilters }
                         )}
                       </Td>
                       <Td className="whitespace-nowrap text-xs text-slate-500"><time dateTime={c.updated_at}>{formatRelative(c.updated_at, lang)}</time></Td>
-                    </tr>
+                    </ClickableRow>
                   );
                 })}
               </tbody>
@@ -338,7 +341,7 @@ async function CaseOverview({ user, f }: { user: AuthUser; f: AnalyticsFilters }
               />
             </Card>
           )}
-          <Card title={tr("Recent activity")} description={tr("Latest recorded actions on cases you can access.")} className={stationScope ? "" : "xl:col-span-2"}>
+          <Card title={tr("Recent activity")} description={tr("Latest recorded actions on cases you can access.")} actions={<LiveRefresh />} className={stationScope ? "" : "xl:col-span-2"}>
             {activity.length === 0 ? (
               <p className="text-sm text-slate-500">{tr("No recent activity.")}</p>
             ) : (

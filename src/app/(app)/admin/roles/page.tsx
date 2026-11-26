@@ -39,7 +39,7 @@ export default async function RolesPage() {
             <div className="flex items-start justify-between gap-2">
               <div>
                 <h2 className="text-sm font-semibold text-slate-900">
-                  {canEdit ? <Link href={`/admin/roles/${r.id}`} className="text-[#1B6650] hover:underline">{roleName(tr, r)}</Link> : roleName(tr, r)}
+                  {canEdit ? <Link href={`/admin/roles/${r.id}`} className="text-[#111216] hover:underline">{roleName(tr, r)}</Link> : roleName(tr, r)}
                 </h2>
                 <p className="mt-1 text-xs text-slate-600">{r.is_system ? tr((r.description || "No description.") as MsgKey) : r.description || tr("No description.")}</p>
               </div>

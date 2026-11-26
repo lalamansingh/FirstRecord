@@ -24,7 +24,7 @@ export function OrgLogo({ size = 56, inverted = false }: { size?: number; invert
   return (
     <span
       aria-hidden
-      className={`flex shrink-0 items-center justify-center rounded-md font-bold tracking-tight ${inverted ? "bg-white text-navy-900" : "bg-navy-900 text-white"}`}
+      className={`flex shrink-0 items-center justify-center rounded-full font-semibold tracking-tight ${inverted ? "bg-white text-[#111216]" : "bg-[#111216] text-white"}`}
       style={{ width: size, height: size, fontSize: Math.round(size * 0.36) }}
     >
       FR

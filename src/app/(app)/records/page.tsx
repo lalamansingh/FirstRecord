@@ -46,7 +46,7 @@ const DRAFT_TONE: Record<string, Tone> = { draft: "slate", clarification_request
 
 function CaseLink({ id, reference, tab, tr }: { id: string | null; reference: string | null; tab?: string; tr: Tr }) {
   if (!id) return <span className="text-xs text-slate-500">{tr("Intake (no case yet)")}</span>;
-  return <Link href={`/cases/${id}${tab ? `?tab=${tab}` : ""}`} className="font-medium text-[#1B6650] hover:underline">{reference ?? tr("Case")}</Link>;
+  return <Link href={`/cases/${id}${tab ? `?tab=${tab}` : ""}`} className="font-medium text-[#111216] hover:underline">{reference ?? tr("Case")}</Link>;
 }
 
 export default async function RecordsPage({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
@@ -179,7 +179,7 @@ function TabTable({ tab, user, f, filtered, hrefFor, tr, lang }: {
           <tbody>
             {rows.map((r) => (
               <tr key={r.id} className="hover:bg-slate-50">
-                <Td><Link href={`/statements/${r.id}`} className="font-medium text-[#1B6650] hover:underline">{formatDate(r.intake_at, { time: true, lang })}</Link><p className="text-xs text-slate-500">{r.station_code}</p></Td>
+                <Td><Link href={`/statements/${r.id}`} className="font-medium text-[#111216] hover:underline">{formatDate(r.intake_at, { time: true, lang })}</Link><p className="text-xs text-slate-500">{r.station_code}</p></Td>
                 <Td><CaseLink tr={tr} id={r.case_id} reference={r.reference} /></Td>
                 <Td className="text-xs">{r.capture_method ? tr(CAPTURE_METHOD_LABELS[r.capture_method] as MsgKey) : tr("Not chosen")}</Td>
                 <Td className="text-xs">{LANGUAGES[r.language] ? tr(LANGUAGES[r.language].label as MsgKey) : r.language}</Td>
@@ -207,7 +207,7 @@ function TabTable({ tab, user, f, filtered, hrefFor, tr, lang }: {
             {rows.map((r) => (
               <tr key={r.id} className="hover:bg-slate-50">
                 <Td>
-                  <Link href={`/statements/${r.statement_id}`} className="font-medium text-[#1B6650] hover:underline">v{r.version}</Link>
+                  <Link href={`/statements/${r.statement_id}`} className="font-medium text-[#111216] hover:underline">v{r.version}</Link>
                   {r.has_uncertainty ? <Badge tone="amber" className="ml-2">{tr("Uncertainty noted")}</Badge> : null}
                 </Td>
                 <Td><CaseLink tr={tr} id={r.case_id} reference={r.reference} /></Td>
@@ -235,7 +235,7 @@ function TabTable({ tab, user, f, filtered, hrefFor, tr, lang }: {
           <tbody>
             {rows.map((r) => (
               <tr key={r.id} className="hover:bg-slate-50">
-                <Td><Link href={`/statements/${r.statement_id}/review?draft=${r.id}`} className="font-medium text-[#1B6650] hover:underline">{tr("Open draft")}</Link><p className="text-xs text-slate-500">{tr("by {name}", { name: r.created_by_name })}</p></Td>
+                <Td><Link href={`/statements/${r.statement_id}/review?draft=${r.id}`} className="font-medium text-[#111216] hover:underline">{tr("Open draft")}</Link><p className="text-xs text-slate-500">{tr("by {name}", { name: r.created_by_name })}</p></Td>
                 <Td><CaseLink tr={tr} id={r.case_id} reference={r.reference} /></Td>
                 <Td><Badge tone={DRAFT_TONE[r.status] ?? "slate"}>{DRAFT_STATUS_LABELS[r.status] ? tr(DRAFT_STATUS_LABELS[r.status] as MsgKey) : r.status}</Badge></Td>
                 <Td className="text-xs">
@@ -316,7 +316,7 @@ function TabTable({ tab, user, f, filtered, hrefFor, tr, lang }: {
               <tr key={r.id} className="hover:bg-slate-50">
                 <Td>
                   {r.case_id ? (
-                    <Link href={`/cases/${r.case_id}?tab=records`} className="font-medium text-[#1B6650] hover:underline">{r.filename}</Link>
+                    <Link href={`/cases/${r.case_id}?tab=records`} className="font-medium text-[#111216] hover:underline">{r.filename}</Link>
                   ) : (
                     <span className="font-medium text-slate-800">{r.filename}</span>
                   )}

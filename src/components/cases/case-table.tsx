@@ -9,6 +9,7 @@ import { Badge, inputClass, cx, type Tone } from "@/components/ui";
 import { PriorityBadge } from "@/components/i18n/localized";
 import { bulkAction } from "@/app/(app)/cases/actions";
 import { formatDate, formatRelative, isOverdue } from "@/lib/format";
+import { ClickableRow } from "@/components/interactive/clickable-row";
 
 export interface TableCase {
   id: string;
@@ -75,9 +76,16 @@ export function CaseTable({
         className={cx("border-b border-slate-200 bg-slate-50 px-3 py-2.5 text-left text-[11.5px] font-semibold text-slate-500", extra)}
       >
         {s ? (
-          <Link href={s.href} className="inline-flex items-center gap-1 hover:text-slate-900">
+          <Link
+            href={s.href}
+            scroll={false}
+            className={cx(
+              "-mx-1.5 inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 transition-colors hover:bg-[#F1F0EC] hover:text-[#111216]",
+              s.active && "bg-[#E7F6E9] text-[#111216]",
+            )}
+          >
             {s.label}
-            <Icon className="h-3 w-3" aria-hidden />
+            <Icon className={cx("h-3 w-3", s.active ? "text-[#111216]" : "opacity-50")} aria-hidden />
             <span className="sr-only">{s.active ? `, ${s.dir === "asc" ? tr("sorted ascending") : tr("sorted descending")}` : `, ${tr("sortable")}`}</span>
           </Link>
         ) : null}
@@ -129,7 +137,7 @@ export function CaseTable({
             </select>
           </div>
           <SubmitButton size="sm">{tr("Apply")}</SubmitButton>
-          <button type="button" className="text-sm text-[#1B6650] underline" onClick={() => setSelected(new Set())}>
+          <button type="button" className="text-sm text-[#111216] underline" onClick={() => setSelected(new Set())}>
             {tr("Clear selection")}
           </button>
         </ActionForm>
@@ -137,19 +145,19 @@ export function CaseTable({
       {/* Mobile: stacked cards */}
       <ul className="divide-y divide-slate-100 sm:hidden" aria-label={tr("Cases")}>
         {rows.map((r) => (
-          <li key={r.id} className={cx("flex gap-3 px-4 py-3.5", selected.has(r.id) && "bg-navy-50")}>
+          <li key={r.id} className={cx("relative flex gap-3 px-4 py-3.5 transition-colors hover:bg-[#FAFAF7]", selected.has(r.id) && "bg-[#E7F6E9]")}>
             {canBulk && (
               <input
                 type="checkbox"
                 aria-label={tr("Select {ref}", { ref: r.reference })}
                 checked={selected.has(r.id)}
                 onChange={() => toggle(r.id)}
-                className="mt-1 h-4 w-4 shrink-0 rounded border-slate-300 accent-blue-700"
+                className="relative z-10 mt-1 h-4 w-4 shrink-0 rounded border-slate-300 accent-[#111216]"
               />
             )}
             <div className="min-w-0 flex-1">
               <div className="flex items-baseline justify-between gap-3">
-                <Link href={`/cases/${r.id}`} className="font-mono text-xs font-semibold text-[#1B6650] hover:underline">
+                <Link href={`/cases/${r.id}`} className="font-mono text-xs font-semibold text-[#111216] after:absolute after:inset-0 after:content-[''] hover:underline">
                   {r.reference}
                 </Link>
                 <span className="shrink-0 text-xs text-slate-500" title={formatDate(r.updated_at, { time: true, lang })}>
@@ -194,7 +202,7 @@ export function CaseTable({
                     aria-label={tr("Select all cases on this page")}
                     checked={allSelected}
                     onChange={() => setSelected(allSelected ? new Set() : new Set(rows.map((r) => r.id)))}
-                    className="h-4 w-4 rounded border-slate-300 accent-blue-700"
+                    className="h-4 w-4 rounded border-slate-300 accent-[#111216]"
                   />
                 </th>
               )}
@@ -212,7 +220,7 @@ export function CaseTable({
           </thead>
           <tbody>
             {rows.map((r) => (
-              <tr key={r.id} className={cx("transition-colors hover:bg-slate-50", selected.has(r.id) && "bg-navy-50")}>
+              <ClickableRow key={r.id} href={`/cases/${r.id}`} label={tr("Open {ref}", { ref: `${r.reference} — ${r.title}` })} className={cx(selected.has(r.id) && "!bg-[#E7F6E9]")}>
                 {canBulk && (
                   <td className="border-b border-slate-100 px-3 py-3 align-top">
                     <input
@@ -220,18 +228,18 @@ export function CaseTable({
                       aria-label={tr("Select {ref}", { ref: r.reference })}
                       checked={selected.has(r.id)}
                       onChange={() => toggle(r.id)}
-                      className="h-4 w-4 rounded border-slate-300 accent-blue-700"
+                      className="h-4 w-4 rounded border-slate-300 accent-[#111216]"
                     />
                   </td>
                 )}
                 <td className="border-b border-slate-100 px-3 py-3 align-top whitespace-nowrap">
-                  <Link href={`/cases/${r.id}`} className="font-mono text-xs font-semibold text-[#1B6650] hover:underline">
+                  <Link href={`/cases/${r.id}`} tabIndex={-1} className="font-mono text-xs font-semibold text-[#111216] hover:underline">
                     {r.reference}
                   </Link>
                   {showStation && <p className="text-xs text-slate-500">{r.station_code}</p>}
                 </td>
                 <td className="min-w-[14rem] border-b border-slate-100 px-3 py-3 align-top">
-                  <Link href={`/cases/${r.id}`} className="font-medium text-slate-900 hover:underline">
+                  <Link href={`/cases/${r.id}`} tabIndex={-1} className="font-medium text-slate-900 hover:underline">
                     {r.title}
                   </Link>
                   <p className="text-xs text-slate-500">
@@ -263,7 +271,7 @@ export function CaseTable({
                 <td className="border-b border-slate-100 px-3 py-3 align-top whitespace-nowrap text-xs text-slate-500" title={formatDate(r.updated_at, { time: true, lang })}>
                   {formatRelative(r.updated_at, lang)}
                 </td>
-              </tr>
+              </ClickableRow>
             ))}
           </tbody>
         </table>

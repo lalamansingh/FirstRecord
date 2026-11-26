@@ -155,7 +155,7 @@ export async function ReviewWorkspace({
               <p className="text-sm text-slate-600">{tr("No transcript available.")}</p>
             )}
             <p className="mt-3 border-t border-slate-100 pt-2 text-xs text-slate-500">
-              <Link href={`/statements/${statement.id}`} className="text-[#1B6650] hover:underline">{tr("Open full statement record")}</Link> {tr("for recordings and all transcript versions.")}
+              <Link href={`/statements/${statement.id}`} className="text-[#111216] hover:underline">{tr("Open full statement record")}</Link> {tr("for recordings and all transcript versions.")}
             </p>
           </Card>
         </div>
@@ -248,7 +248,7 @@ export async function ReviewWorkspace({
 
                 {changed && (
                   <details className="mt-2">
-                    <summary className="cursor-pointer text-xs font-medium text-[#1B6650]">{tr("Show change from v{n}", { n: prev!.version })}</summary>
+                    <summary className="cursor-pointer text-xs font-medium text-[#111216]">{tr("Show change from v{n}", { n: prev!.version })}</summary>
                     <div className="mt-1.5 rounded border border-slate-200 bg-slate-50 p-2">
                       <DiffView parts={diffWords(fieldText(prevF?.value), fieldText(f?.value))} lang={lang} />
                     </div>
@@ -339,7 +339,7 @@ export async function ReviewWorkspace({
           <ol className="space-y-1.5">
             {[...versions].reverse().map((v) => (
               <li key={v.id} className="flex flex-wrap items-baseline gap-x-2 text-sm">
-                <Link href={hrefForVersion(v.version)} aria-current={v.version === viewing.version ? "true" : undefined} className={cx("font-medium hover:underline", v.version === viewing.version ? "text-slate-900" : "text-[#1B6650]")}>
+                <Link href={hrefForVersion(v.version)} aria-current={v.version === viewing.version ? "true" : undefined} className={cx("font-medium hover:underline", v.version === viewing.version ? "text-slate-900" : "text-[#111216]")}>
                   v{v.version}
                 </Link>
                 <Badge tone={v.origin === "human" ? "slate" : "blue"}>{v.origin === "ai" ? tr("AI") : v.origin === "demo" ? tr("Assistant") : tr("Staff")}</Badge>

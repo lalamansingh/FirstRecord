@@ -73,7 +73,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                   return (
                     <li key={c.id} className="px-4 py-3 hover:bg-slate-50">
                       <Link href={`/cases/${c.id}`} className="block">
-                        <span className="font-mono text-xs font-semibold text-[#1B6650]">{c.reference}</span>
+                        <span className="font-mono text-xs font-semibold text-[#111216]">{c.reference}</span>
                         <span className="ml-2 text-sm font-medium text-slate-900">{c.title}</span>
                         <span className="mt-1 flex flex-wrap items-center gap-2 text-xs text-slate-500">
                           <Badge tone={st.color}>{st.label}</Badge><PriorityBadge priority={c.priority} />{c.incident_type ? trDyn(tr, c.incident_type) : ""} · {tr("received {date}", { date: formatDate(c.received_at, { lang }) })}
