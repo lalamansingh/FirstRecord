@@ -18,10 +18,12 @@ export default async function LoginPage() {
   const lang = await getUiLang();
   const t = EXTRA_LOGIN_STRINGS[lang] ?? loginStrings[lang] ?? loginStrings.en;
   // Evaluation credentials are shown only when the host sets them (never hard-coded).
-  const reviewLogin =
-    process.env.REVIEW_LOGIN_EMAIL && process.env.REVIEW_LOGIN_PASSWORD
-      ? { email: process.env.REVIEW_LOGIN_EMAIL, password: process.env.REVIEW_LOGIN_PASSWORD }
-      : null;
+  // Falls back to the evaluation account (JUDGE_*) in demo mode, so hosts that only set
+  // JUDGE_EMAIL / JUDGE_PASSWORD still show the panel.
+  const demoMode = ["1", "true", "yes", "on"].includes((process.env.DEMO_MODE || "").toLowerCase());
+  const reviewEmail = process.env.REVIEW_LOGIN_EMAIL || (demoMode ? process.env.JUDGE_EMAIL : undefined);
+  const reviewPassword = process.env.REVIEW_LOGIN_PASSWORD || (demoMode ? process.env.JUDGE_PASSWORD : undefined);
+  const reviewLogin = reviewEmail && reviewPassword ? { email: reviewEmail, password: reviewPassword } : null;
 
   const languages = UI_LANGS.map((l) => ({ code: l.code, native: l.native }));
 
