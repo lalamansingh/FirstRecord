@@ -20,3 +20,6 @@ pitch/
 # OS / editor
 .DS_Store
 *.log
+.vercel
+.env*
+!.env.example

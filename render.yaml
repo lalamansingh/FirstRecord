@@ -1,30 +1,29 @@
-# Render Blueprint: Dashboard -> New -> Blueprint -> pick this repo.
-# A persistent disk is required (SQLite database + stored recordings); disks need a paid instance type.
+# Render Blueprint — Dashboard -> New -> Blueprint -> pick this repo (or use the Deploy button in README).
+# Free plan: one long-running container. The SQLite database lives on the container's
+# filesystem, so it is re-seeded with fictional demo data whenever the service restarts
+# (free instances sleep after ~15 min idle). For persistent data, switch to a paid plan
+# and add a disk mounted at /data.
 services:
   - type: web
     name: firstrecord
     runtime: docker
-    plan: starter
+    plan: free
     dockerfilePath: ./Dockerfile
     healthCheckPath: /api/health
-    disk:
-      name: firstrecord-data
-      mountPath: /data
-      sizeGB: 1
     envVars:
       - key: DEMO_MODE
         value: "true"
       - key: SESSION_SECRET
         generateValue: true
       - key: STORAGE_ENCRYPTION_KEY
-        sync: false   # 32 random bytes, base64 — set in the dashboard
-      - key: JUDGE_EMAIL
-        sync: false
-      - key: JUDGE_PASSWORD
-        sync: false
-      - key: JUDGE_NAME
-        value: Hackathon Judges
-      - key: SEED_PASSWORD
-        sync: false
+        generateValue: true
       - key: AI_PROVIDER
         value: demo
+      - key: JUDGE_EMAIL
+        value: judges@firstrecord.example
+      - key: JUDGE_NAME
+        value: Hackathon Judges
+      - key: JUDGE_PASSWORD
+        sync: false   # you choose it in the Render dashboard (12+ characters)
+      - key: SEED_PASSWORD
+        sync: false   # password for the fictional sample staff accounts (12+ characters)

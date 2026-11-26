@@ -1,0 +1,25 @@
+# dependencies & build output
+node_modules
+.next
+out
+coverage
+*.tsbuildinfo
+next-env.d.ts
+
+# local data (SQLite DB, recordings, attachments) — never commit
+data/
+
+# secrets
+.env
+.env.local
+.env.*.local
+
+# pitch deck workspace (not part of the app)
+pitch/
+
+# OS / editor
+.DS_Store
+*.log
+
+.git
+scripts/_*

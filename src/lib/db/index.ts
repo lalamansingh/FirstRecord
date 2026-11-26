@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { migrations } from "./migrations";
+import { autoSeed } from "./autoseed";
 
 export type Row = Record<string, unknown>;
 export type Param = SQLInputValue | boolean | undefined;
@@ -25,6 +26,7 @@ export function getDb(): DatabaseSync {
   db.exec("PRAGMA busy_timeout = 5000;");
   runMigrations(db);
   instance = db;
+  autoSeed(db, { tx, now, newId });
   return db;
 }
 

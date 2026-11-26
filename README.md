@@ -8,6 +8,15 @@ FirstRecord is a case-management and statement-recording system for police stati
 - track cases and tasks through a configurable workflow,
 - see the status and next action for every case.
 
+
+## Live deployment (one click)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/lalamansingh/FirstRecord)
+
+Runs the Docker image on Render's free plan with fictional demo data. You'll be asked for
+`JUDGE_PASSWORD` (evaluation account `judges@firstrecord.example`) and `SEED_PASSWORD`
+(sample staff accounts). Free instances sleep when idle and re-seed the demo data on restart.
+
 ## What FirstRecord is not
 
 - **It is not an official filing system.** Saving or reviewing a draft never files an FIR. A case shows "Officially filed" only when an authorized external system confirms it, and no such integration ships with FirstRecord. See [docs/external-dependencies.md](docs/external-dependencies.md).

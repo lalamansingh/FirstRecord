@@ -2,14 +2,14 @@
 # Debian slim (not Alpine) so native prebuilt binaries (onnxruntime-node, sharp)
 # pulled in by @huggingface/transformers install cleanly. node:sqlite needs >= 22.13.
 
-FROM node:22-bookworm-slim AS deps
+FROM node:24-bookworm-slim AS deps
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
-COPY package.json package-lock.json ./
+COPY package.json package-lock.json .npmrc ./
 # Full install: the runtime bootstrap (migrate/seed/create-user) runs TypeScript via tsx.
 RUN npm ci --no-audit --no-fund
 
-FROM node:22-bookworm-slim AS build
+FROM node:24-bookworm-slim AS build
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production
 COPY --from=deps /app/node_modules ./node_modules
@@ -17,7 +17,7 @@ COPY . .
 # Build-time placeholders only; real values are injected at runtime.
 RUN DEMO_MODE=true DATABASE_PATH=/tmp/build.db STORAGE_DIR=/tmp/build-storage npm run build
 
-FROM node:22-bookworm-slim AS runtime
+FROM node:24-bookworm-slim AS runtime
 WORKDIR /app
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \

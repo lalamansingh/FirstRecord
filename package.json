@@ -4,7 +4,7 @@
   "private": true,
   "description": "FirstRecord — police-station case management and statement recording system",
   "engines": {
-    "node": ">=22.13"
+    "node": "24.x"
   },
   "scripts": {
     "dev": "next dev",
