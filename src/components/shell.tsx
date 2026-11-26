@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 import { cx } from "./ui";
 import { CommandPalette } from "@/components/command-palette";
+import { VoiceAssistant } from "@/components/voice/voice-assistant";
 import { useT } from "@/lib/i18n/client";
 import { logoutAction } from "@/app/login/actions";
 import { setUiLanguageAction as setLanguageAction } from "@/app/language-actions";
@@ -321,6 +322,7 @@ export function AppShell({
           {children}
         </main>
         <CommandPalette />
+        <VoiceAssistant userName={user.name} />
       </div>
     </div>
   );

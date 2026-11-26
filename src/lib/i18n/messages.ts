@@ -16,6 +16,7 @@ import { hiShell, shellExtra } from "./messages-shell";
 import { hiUxA, uxaExtra } from "./messages-uxa";
 import { hiUxB, uxbExtra } from "./messages-uxb";
 import { hiInteractive, interactiveExtra } from "./messages-interactive";
+import { hiVoice, voiceExtra } from "./messages-voice";
 import { hiAudit, auditExtra } from "./messages-audit";
 import { EXTRA_LANG_MESSAGES } from "./langs";
 import type { LangCode } from "./lang-list";
@@ -573,7 +574,7 @@ const hiCore = {
 } as const;
 
 /** Records, analytics, settings and administration strings live in messages-admin.ts. */
-const hi = { ...hiCore, ...hiAdmin, ...hiLegal, ...hiOnline, ...hiUpdates, ...hiSos, ...hiExtra, ...hiShell, ...hiAudit, ...hiUxA, ...hiUxB, ...hiInteractive } as const;
+const hi = { ...hiCore, ...hiAdmin, ...hiLegal, ...hiOnline, ...hiUpdates, ...hiSos, ...hiExtra, ...hiShell, ...hiAudit, ...hiUxA, ...hiUxB, ...hiInteractive, ...hiVoice } as const;
 
 export type MsgKey = keyof typeof hi;
 export type Tr = (key: MsgKey, vars?: Record<string, string | number>) => string;
@@ -583,7 +584,7 @@ export const messages: Partial<Record<Lang, Partial<Record<MsgKey, string>>>> = 
   en: {},
   hi,
   ...Object.fromEntries(
-    Object.entries(shellExtra).map(([code, m]) => [code, { ...EXTRA_LANG_MESSAGES[code], ...m, ...auditExtra[code as keyof typeof auditExtra], ...uxaExtra[code as keyof typeof uxaExtra], ...uxbExtra[code as keyof typeof uxbExtra], ...interactiveExtra[code as keyof typeof interactiveExtra] }]),
+    Object.entries(shellExtra).map(([code, m]) => [code, { ...EXTRA_LANG_MESSAGES[code], ...m, ...auditExtra[code as keyof typeof auditExtra], ...uxaExtra[code as keyof typeof uxaExtra], ...uxbExtra[code as keyof typeof uxbExtra], ...interactiveExtra[code as keyof typeof interactiveExtra], ...voiceExtra[code as keyof typeof voiceExtra] }]),
   ),
 };
 
