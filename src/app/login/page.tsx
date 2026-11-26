@@ -17,6 +17,11 @@ export default async function LoginPage() {
   if (await getCurrentUser()) redirect("/");
   const lang = await getUiLang();
   const t = EXTRA_LOGIN_STRINGS[lang] ?? loginStrings[lang] ?? loginStrings.en;
+  // Evaluation credentials are shown only when the host sets them (never hard-coded).
+  const reviewLogin =
+    process.env.REVIEW_LOGIN_EMAIL && process.env.REVIEW_LOGIN_PASSWORD
+      ? { email: process.env.REVIEW_LOGIN_EMAIL, password: process.env.REVIEW_LOGIN_PASSWORD }
+      : null;
 
   const languages = UI_LANGS.map((l) => ({ code: l.code, native: l.native }));
 
@@ -81,6 +86,20 @@ export default async function LoginPage() {
               <Info className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
               <span>{t.notice}</span>
             </p>
+            {reviewLogin && (
+              <section aria-labelledby="review-title" className="mt-4 rounded-md border border-slate-300 bg-white px-4 py-3.5 text-[13px] leading-relaxed text-slate-700">
+                <h2 id="review-title" className="text-[13px] font-semibold uppercase tracking-wide text-slate-900">
+                  {t.reviewTitle ?? loginStrings.en.reviewTitle}
+                </h2>
+                <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">
+                  <dt className="text-slate-500">{t.reviewId ?? loginStrings.en.reviewId}</dt>
+                  <dd className="font-mono text-slate-900 select-all">{reviewLogin.email}</dd>
+                  <dt className="text-slate-500">{t.reviewPassword ?? loginStrings.en.reviewPassword}</dt>
+                  <dd className="font-mono text-slate-900 select-all">{reviewLogin.password}</dd>
+                </dl>
+                <p className="mt-2.5 border-t border-slate-200 pt-2.5 font-medium text-slate-800">{t.reviewUpdate ?? loginStrings.en.reviewUpdate}</p>
+              </section>
+            )}
             {/* Points on small screens */}
             <ul className="mt-8 space-y-4 lg:hidden">
               {t.points.map((p) => (

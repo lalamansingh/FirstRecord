@@ -27,3 +27,7 @@ services:
         sync: false   # you choose it in the Render dashboard (12+ characters)
       - key: SEED_PASSWORD
         sync: false   # password for the fictional sample staff accounts (12+ characters)
+      - key: REVIEW_LOGIN_EMAIL
+        value: judges@firstrecord.example   # shown on the sign-in page for reviewers
+      - key: REVIEW_LOGIN_PASSWORD
+        sync: false   # enter the same value as JUDGE_PASSWORD
